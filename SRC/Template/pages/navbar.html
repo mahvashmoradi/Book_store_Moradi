@@ -36,13 +36,24 @@
           <li class="nav-item">
             <a href="#" class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> {{ request.user }} </span>
-              <i class="fas fa-shopping-cart"></i>
-              <span class="clearfix d-none d-sm-inline-block"> سبد خرید </span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link waves-effect" href="#">
+              <span class="clearfix d-none d-sm-inline-block">
+                                <span class="clearfix d-none d-sm-inline-block"> سبد خرید </span>
+                  <i class="fas fa-shopping-cart"></i>
+ </span>
+            </a>
+          </li>
+              <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
               <span class="clearfix d-none d-sm-inline-block"> خروج </span>
+            </a>
+          </li>
+              <li class="nav-item">
+{#            <a class="nav-link waves-effect" href="{% url 'password_change' %}">#}
+              <span class="clearfix d-none d-sm-inline-block"> تغییر پسورد </span>
             </a>
           </li>
               <li class="nav-item">
@@ -52,17 +63,17 @@
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link waves-effect" href="#">
+            <a class="nav-link waves-effect" href="{% url 'account_login' %}">
               <span class="clearfix d-none d-sm-inline-block"> ورود </span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link waves-effect" href="#">
+            <a class="nav-link waves-effect" href="{% url 'account_signup' %}">
               <span class="clearfix d-none d-sm-inline-block"> ثبت نام </span>
             </a>
           </li>
                        <li class="nav-item">
-            <a href="#" class="nav-link waves-effect">
+            <a href="{% url 'app.cart:cart_detail' %}" class="nav-link waves-effect">
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> سبد خرید </span>
             </a>

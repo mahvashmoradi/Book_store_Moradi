@@ -1,0 +1,113 @@
+{% extends "pages/base.html" %}
+{% block title %} cart {% endblock %}
+{% block content %}
+    <div class="container">
+
+        <h1>Shopping Cart </h1>
+        <table class="table table-info table-striped">
+            <colgroup>
+                <col width="5%">
+                <col width="20%">
+                <col width="15%">
+                <col width="15%">
+                <col width="15%">
+                <col width="15%">
+                <col width="15%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">تصویر</th>
+                <th scope="col">محصول</th>
+                <th scope="col">تعداد</th>
+                <th scope="col">پاک کردن</th>
+                <th scope="col">قیمت واحد</th>
+{#                <th scope="col">قیمت با تخفیف</th>#}
+                {#            <th scope="col">price with discount</th>#}
+{#                <th scope="col">مجموع</th>#}
+                <th scope="col">مجموع</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for item in cart %}
+                {% with product=item.product %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><img src="{{ product.image.url }}" class="card-img-top"></td>
+                        <td>{{ product.name }} </td>
+                        {#                    <td>{{ item.quantity }}</td>#}
+                        <td>
+                            <form method="post" action="{% url 'app.cart:add_cart' product.id %}">
+                                {{ item.update_quantity_form.quantity }}
+                                {{ item.update_quantity_form.override }}
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col">
+                                        <button type="submit">به روز کن
+                                        </button>
+                                    </div>
+                                    {#            <div class="col delete_input"><button type="button" class="btn btn-danger">پاک کردن متن ورودی</button></div>#}
+                                </div>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="{% url 'cart:remove_cart' product.id %}">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-primary">پاک کردن</button>
+                                    </div>
+                                    {#            <div class="col delete_input"><button type="button" class="btn btn-danger">پاک کردن متن ورودی</button></div>#}
+                                </div>
+                            </form>
+                        </td>
+                        <td>{{ item.price }}</td>
+{#                        <td>{{ item.discount_price }}</td>#}
+{#                        <td>{{ item.total_discount_price }}</td>#}
+                        {#                <td>{{ item.pricediscount }}</td>#}
+                        <td>{{ item.total_price }}</td>
+                    </tr>
+                {% endwith %}
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td>مجموع</td>
+                <td></td>
+                <td></td>
+{#                <td></td>#}
+                <td></td>
+                <td></td>
+{#                <td>{{ cart.get_total_discount_price }}</td>#}
+                <td>{{ cart.get_total_price }}</td>
+            </tr>
+
+            </tbody>
+        </table>
+{#          <div class="u-cart-blocks-container">#}
+{#            <div class="u-cart-block u-indent-30">#}
+{#              <div class="u-cart-block-container u-clearfix">#}
+{#                <h5 class="u-cart-block-header u-text">Promotion Code</h5>#}
+{#                <div class="u-cart-block-content u-text">#}
+{#                  <div class="u-cart-form u-form">#}
+{#                    <form action="#" method="POST" class="u-clearfix u-form-horizontal u-form-spacing-10 u-inner-form" source="custom" name="form">#}
+{#                      <div class="u-form-group">#}
+{#                        <label for="name-5861" class="u-form-control-hidden u-label">Coupon code</label>#}
+{#                        <input type="text" placeholder="Coupon code" id="name-5861" name="coupon" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">#}
+{#                      </div>#}
+{#                      <div class="u-align-left u-form-group u-form-submit">#}
+{#                        <a href="#" class="u-btn u-btn-submit u-button-style">Apply Coupon</a>#}
+{#                        <input type="submit" value="submit" class="u-form-control-hidden">#}
+{#                      </div>#}
+{#                      <div class="u-form-send-message u-form-send-success">Thank you! Your message has been sent.</div>#}
+{#                      <div class="u-form-send-error u-form-send-message">Unable to send your message. Please fix errors then try again.</div>#}
+{#                      <input type="hidden" value="" name="recaptchaResponse">#}
+{#                    </form>#}
+{#                  </div>#}
+{#                </div>#}
+{#              </div>#}
+{#            </div>#}
+        <p><a href="{% url 'pages:home' %}" class="btn btn-primary btn-md my-0 p"> Continue Shopping </a></p>
+        <p><a href="#" class="btn btn-primary btn-md my-0 p">chek out </a></p>
+    </div>
+{% endblock %}

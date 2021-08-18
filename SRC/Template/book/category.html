@@ -1,0 +1,22 @@
+{% extends 'pages/base.html' %}
+    {% block title %}
+        <title>Categories</title>
+
+    {% endblock title %}
+{% block content %}
+    <div class="row">
+    <div class="col-2" >
+        <h3>Categories</h3>
+            <div class="list-group">
+  <a href="{% url 'categories_list' %}" class="list-group-item list-group-item-action list-group-item-success">All</a>
+{#  <a href="{% url 'categories_list' %}" class="list-group-item list-group-item-action list-group-item-success">All</a>#}
+
+        {% for obj in object_list %}
+  <a href="{% url 'home' obj.pk %}" class="list-group-item list-group-item-action list-group-item-primary">Admin</a>
+
+
+</div>
+        </div>
+    </div>
+        {% endfor %}
+{% endblock %}

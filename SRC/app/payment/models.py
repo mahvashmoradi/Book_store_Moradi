@@ -6,59 +6,37 @@ from app.accounts.models import CustomUser, Customer
 
 
 # Create your models here.
-# Discount Code which decrease price on value
-class DiscountCodeValue(models.Model):
-    class Meta:
-        verbose_name = 'کد تخفیف نقدی'
-        verbose_name_plural = 'کدهای تخفیف نقدی'
-
+# Coupons Code which decrease total price of factor
+class Coupons(models.Model):
+    VALUE = 'V'
+    PERCENT = 'P'
+    DISCOUNT_CHOICES = [(VALUE, 'مقدار'), (PERCENT, 'درصدی')]
     started = models.DateTimeField('زمان شروع', )
     finished = models.DateTimeField('زمان پایان', )
     code = models.CharField('کد تخفیف', blank=False, max_length=10)
-    amount = models.FloatField()
+    value = models.PositiveBigIntegerField('مقدار تخفیف', blank=True, null=True)
+    percent = models.FloatField('درصد تخفیف', blank=True, null=True)
+    choice_discount = models.CharField('نوع تخفیف', choices=DISCOUNT_CHOICES, max_length=1, default=VALUE)
+
+    class Meta:
+        verbose_name = 'کد تخفیف'
+        verbose_name_plural = 'کدهای تخفیف'
 
     def __str__(self):
         return self.code
 
 
-# Discount Code which decrease price on percent
-class DiscountCodePercent(models.Model):
-    class Meta:
-        verbose_name = 'کد تخفیف درصدی'
-        verbose_name_plural = 'کدهای تخفیف درصدی'
-
-    started = models.DateTimeField('زمان شروع', )
-    finished = models.DateTimeField('زمان پایان', )
-    code = models.CharField('کد تخفیف', blank=False, max_length=10)
-    percent = models.FloatField()
-
-    def __str__(self):
-        return self.code
-
-
-# Discount on price of book with value
-class DiscountValue(models.Model):
-    class Meta:
-        verbose_name = 'تخفیف نقدی'
-        verbose_name_plural = 'تخفیف های نقدی'
-
+# Discount on price of book with value and percent
+class Discount(models.Model):
     book = models.ForeignKey('book.BookModel', on_delete=models.CASCADE, related_name='dis_value',
                              verbose_name='نام کتاب')
-    value = models.DecimalField('مقدارتخفیف', max_digits=8, decimal_places=2)
+    value = models.PositiveBigIntegerField('مقدارتخفیف', blank=True, null=True)
+    percent = models.FloatField('درصد تخفیف', blank=True, null=True)
+    choice_discount = models.CharField(choices=Coupons.DISCOUNT_CHOICES, max_length=1, default=Coupons.VALUE)
 
-    def __str__(self):
-        return str(self.book)
-
-
-# Discount on price of book with percent
-class DiscountPercent(models.Model):
     class Meta:
-        verbose_name = 'تخفیف درصدی'
-        verbose_name_plural = 'تخفیف های درصدی'
-
-    book = models.ForeignKey('book.BookModel', on_delete=models.CASCADE, related_name='dis_percent',
-                             verbose_name='نام محصول')
-    percent = models.IntegerField('درصد تخفیف', )
+        verbose_name = 'تخفیف محصول'
+        verbose_name_plural = 'تخفیف محصولات'
 
     def __str__(self):
         return str(self.book)
@@ -66,61 +44,60 @@ class DiscountPercent(models.Model):
 
 # Invoice(factor)
 class Invoice(models.Model):
-    class Meta:
-        verbose_name = 'سفارش'
-        verbose_name_plural = 'سفارشات'
-
     ORDER = 'O'
     COMPLETE = 'C'
     INVOICE_CHOICES = [(ORDER, 'سفارش'), (COMPLETE, 'آماده ارسال')]
     customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING, related_name='invoices', verbose_name='کاربر')
     invoice_date = models.DateTimeField('تاریخ سفارش', auto_now_add=True)
-    invoice_complete_date = models.DateTimeField('تاریخ تکمیل سفارش', )
-    total = models.BigIntegerField('مجموع', )
-    total_with_discount = models.BigIntegerField('قابل پرداخت', blank=True, null=True)
+    invoice_complete_date = models.DateTimeField('تاریخ تکمیل سفارش',blank=True, null=True )
+    total = models.PositiveBigIntegerField('مجموع',blank=True, null=True )
+    total_with_discount = models.PositiveBigIntegerField('قابل پرداخت', blank=True, null=True)
     status = models.CharField(choices=INVOICE_CHOICES, max_length=1, default=ORDER, verbose_name='وضعیت سفارش')
-    discount_value = models.ForeignKey(DiscountCodeValue, blank=True, null=True, on_delete=models.DO_NOTHING,
-                                       related_name='value_code_discount')
-    discount_percent = models.ForeignKey(DiscountCodePercent, blank=True, null=True, on_delete=models.DO_NOTHING,
-                                         related_name='percent_code_discount')
+    check_discount = models.ForeignKey(Coupons, blank=True, null=True, on_delete=models.DO_NOTHING,
+                                       related_name='coupons_code')
+
+    def calculate(self):
+        qs_value = Coupons.objects.filter(finished__gte=self.invoice_complete_date,
+                                          started__lte=self.invoice_complete_date)
+        total = self.total
+        data = {'qs': qs_value}
+        # if qs_percent:
+        #     total = (100 - qs_percent.values('percent')[0]['percent']) * total / 100
+        #     self.discount_percent = DiscountCodePercent.objects.get(finished__gte=self.invoice_complete_date,
+        #                                                             started__lte=self.invoice_complete_date)
+        #     self.save()
+
+        if qs_value:
+            if 'qs' == Coupons.VALUE:
+                total = total - qs_value.values('amount')[0]['amount']
+            else:
+                total = (100 - qs_value.values('percent')[0]['percent']) * total / 100
+
+        self.total_with_discount = total
+        self.save()
+        return self.total_with_discount
+
+    class Meta:
+        verbose_name = 'سفارش'
+        verbose_name_plural = 'سفارشات'
 
     def __str__(self):
         return str(self.id)
 
-    def calculate(self):
-        qs_percent = DiscountCodePercent.objects.filter(finished__gte=self.invoice_complete_date,
-                                                        started__lte=self.invoice_complete_date)
-        qs_value = DiscountCodeValue.objects.filter(finished__gte=self.invoice_complete_date,
-                                                    started__lte=self.invoice_complete_date)
-        total = self.total
-        if qs_percent:
-            total = (100 - qs_percent.values('percent')[0]['percent']) * total / 100
-            self.discount_percent = DiscountCodePercent.objects.get(finished__gte=self.invoice_complete_date,
-                                                                    started__lte=self.invoice_complete_date)
-            self.save()
-
-        if qs_value:
-            total = total - qs_value.values('amount')[0]['amount']
-            self.discount_value = DiscountCodeValue.objects.get(finished__gte=self.invoice_complete_date,
-                                                                started__lte=self.invoice_complete_date)
-            self.save()
-
-        self.total_with_discount = total
-
-        # self.save()
-        return self.total_with_discount
-
 
 # Item in Invoice (factor detail)
 class InvoiceLine(models.Model):
+    invoice = models.ForeignKey(Invoice, on_delete=models.PROTECT, related_name='Items', verbose_name='شماره فاکتور')
+    items = models.ForeignKey('book.BookModel', on_delete=models.DO_NOTHING, verbose_name='محصول')
+    unit_price = models.PositiveIntegerField('قیمت واحد', )
+    quantity = models.IntegerField('تعداد', )
+
+    def add_to_cart(self):
+        return self.id
+
     class Meta:
         verbose_name = 'جزییات سفارش'
         verbose_name_plural = 'جزییات سفارش'
-
-    invoice = models.ForeignKey(Invoice, on_delete=models.PROTECT, verbose_name='شماره فاکتور')
-    book = models.ForeignKey('book.BookModel', on_delete=models.DO_NOTHING, verbose_name='محصول')
-    unit_price = models.IntegerField('قیمت واحد', )
-    quantity = models.IntegerField('تعداد', )
 
     def __str__(self):
         return str(self.invoice)

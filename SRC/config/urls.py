@@ -18,11 +18,14 @@ from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls.static import static
 from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('app.pages.urls')),
+    path('cart/', include('app.cart.urls', namespace='cart')),
+    path('', include('app.pages.urls', namespace='pages')),
     path('book/', include('app.book.urls')),
-    path('account/', include('app.accounts.urls')),
+    path('accounts/', include('allauth.urls')),  # new
+    path('accounts/', include('app.accounts.urls')),
     path('payment/', include('app.payment.urls')),
 ]
 urlpatterns += staticfiles_urlpatterns()
