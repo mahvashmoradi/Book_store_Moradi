@@ -26,7 +26,7 @@ urlpatterns = [
     path('book/', include('app.book.urls')),
     path('accounts/', include('allauth.urls')),  # new
     path('accounts/', include('app.accounts.urls')),
-    path('payment/', include('app.payment.urls')),
+    path('payment/', include('app.payment.urls', namespace='payment')),
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

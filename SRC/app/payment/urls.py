@@ -2,6 +2,7 @@ from django.urls import path
 from .views import home, InvoiceView, add_to_cart
 from rest_framework import routers
 from .apiview import InvoiceApiView, CreateOrder, AddOrder
+app_name = 'app.payment'
 
 router = routers.DefaultRouter()
 router.register('invoice', InvoiceApiView, basename='invoice')

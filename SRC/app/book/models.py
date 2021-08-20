@@ -1,6 +1,9 @@
+from django.urls import reverse
 from django.db import models
 # from django.urls import revers
 # CategoryModel
+from django.shortcuts import redirect
+
 from app import payment
 
 
@@ -30,20 +33,20 @@ class Author(models.Model):
 
 # book
 class BookModel(models.Model):
-
     name = models.CharField('نام', max_length=100)
     author = models.ManyToManyField(Author, verbose_name='نویسنده')
-    price = models.PositiveBigIntegerField('قیمت',)
+    price = models.PositiveBigIntegerField('قیمت', )
     discount_price = models.PositiveBigIntegerField('قیمت با تخفیف', default=0)
     # discount = models.IntegerField('تخفیف', default=0)
     created = models.DateField('تاریخ ثبت کتاب', auto_now_add=True)
-    categories = models.ManyToManyField(CategoryModel, blank=False,related_name='category', verbose_name='گروه')
+    categories = models.ManyToManyField(CategoryModel, blank=False, related_name='category', verbose_name='گروه')
     inventory = models.IntegerField('موجودی')
     image = models.ImageField(upload_to='book/', null=True, default='0.png')
 
     class Meta:
         verbose_name = 'کتاب'
         verbose_name_plural = 'کتاب ها'
+
     # def get_absolute_url(self):
     #     return reverse("home", args=[str(self.id)])
     #     # return reverse("home", kwargs={'slug': self.slug })
@@ -58,7 +61,7 @@ class BookModel(models.Model):
                 price = price - amount['value']
             else:
                 percent = self.dis_value.values('percent')[0]
-                print('p',percent)
+                print('p', percent)
                 price = (100 - percent['percent']) * price / 100
         if price != self.price:
             self.price_discount = price
@@ -70,6 +73,11 @@ class BookModel(models.Model):
     # get category of book
     def get_category_display(self):
         return self.categories.values('name')
+
+    def add_cart(self):
+        return reverse('payment:add_to_cart',
+                       # pk= str(self.id) )
+        kwargs={'pk': self.id})
 
     def __str__(self):
         return self.name

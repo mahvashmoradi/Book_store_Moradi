@@ -113,19 +113,19 @@
                                            class="dark-grey-text">{{ item.name }}
                                             {#                      <span class="badge badge-pill {{ item.get_label_display }}-color">NEW</span>#}
                                         </a>
-                                        {#                      <a href="{% url 'add_to_cart' item.pk %}" class="btn btn-primary btn-md my-0 p"> Add to cart </a>#}
+                                                              <a href="{{ item.add_cart }}" class="btn btn-primary btn-md my-0 p"> Add to cart </a>
                                         {#                      <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">#}
-                                        <form method="post" action="{% url 'app.cart:add_cart' item.id %}">
-                                            {{ form }}
-                                            {% csrf_token %}
-                                            <div class="row">
-                                                <div class="col">
-                                                    <button type="submit" class="btn btn-primary">اضافه به سبد خرید
-                                                    </button>
-                                                </div>
+{#                                        <form method="post" action="{% url 'app.cart:add_cart' item.id %}">#}
+{#                                            {{ form }}#}
+{#                                            {% csrf_token %}#}
+{#                                            <div class="row">#}
+{#                                                <div class="col">#}
+{#                                                    <button type="submit" class="btn btn-primary">اضافه به سبد خرید#}
+{#                                                    </button>#}
+{#                                                </div>#}
 {#                                                            <div class="col delete_input"><button type="button" class="btn btn-danger">پاک کردن متن ورودی</button></div>#}
-                                            </div>
-                                        </form>
+{#                                            </div>#}
+{#                                        </form>#}
 
                                     </strong>
                                     </h5>

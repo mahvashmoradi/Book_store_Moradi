@@ -10,6 +10,8 @@ from django.views.generic import ListView
 from app.book.models import BookModel
 from .models import Invoice, InvoiceLine
 from app.accounts.models import Customer
+
+
 def home(request):
     return HttpResponse('hi')
 
@@ -21,40 +23,38 @@ class InvoiceView(ListView):
     model = Invoice
     template_name = 'payment/Invoice.html'
 
-
 def add_to_cart(request, pk):
     item = get_object_or_404(BookModel, pk=pk)
-    client = get_object_or_404(Customer, user__email=request.user)
-    orderid, created = Invoice.objects.get_or_create(
-        customer=client,
-        status='O'
-    )
-    # order_item, created = InvoiceLine.objects.get_or_create(
-    #     invoice= orderid
-    # )
+    if request.user.is_authenticated:
+        client = get_object_or_404(Customer, user__email=request.user)
+        order_get, created = Invoice.objects.get_or_create(customer=client, status='O')
+        # order_get.customer.add(client)
+        # order_get.save()
+        # order_item, created = InvoiceLine.objects.get_or_create(invoice= order )
+        # order_qs = InvoiceLine.objects.filter(costomer=request.user, status='O')
+        order_item_qs = InvoiceLine.objects.filter(invoice=order_get.id)
+        if order_item_qs.exists():
+            order = order_item_qs[0]
+            # check if the order item is in the order
+            if order_item_qs.items.filter(items__id=item.pk).exists():
+                order_item_qs.quantity += 1
+                order_item_qs.save()
+                # messages.info(request, "This item quantity was updated.")
+                return redirect("pages:home")
+            else:
+                InvoiceLine.objects.create(invoice=order, quantity=1,
+                                                                 unit_price=item.price, items=item)
+                # order.items.add(order_item)
+                # # messages.info(request, "This item was added to your cart.")
+                # return redirect("pages:home")
+                order_get.invoice_date = timezone.now()
+                order_get.save()
+                # order_datail = InvoiceLine.objects.create(
+                #     items=item, quantity= 1, unit_price= item.price_discount)
+                # order_datail.invoice.add(orderid)
+                # messages.info(request, "This item was added to your cart.")
+    return redirect("pages:home")
 
-    # order_qs = InvoiceLine.objects.filter(costomer=request.user, status='O')
-    order_qs = InvoiceLine.objects.filter(invoice= orderid)
-    if order_qs.exists():
-        order = order_qs[0]
-        # check if the order item is in the order
-        if order_qs.items.filter(items__id=item.pk).exists():
-            order_qs.quantity += 1
-            order_qs.save()
-            # messages.info(request, "This item quantity was updated.")
-            return redirect("pages:home")
-        # else:
-            # order.items.add(order_item)
-            # # messages.info(request, "This item was added to your cart.")
-            # return redirect("pages:home")
-        else:
-            orderid_invoice_date = timezone.now()
-            orderid.save()
-            order_datail = InvoiceLine.objects.create(
-                items=item, quantity= 1, unit_price= item.price_discount)
-            order_datail.invoice.add(orderid)
-            # messages.info(request, "This item was added to your cart.")
-            return redirect("pages:home")
 # def remove_from_cart(request, slug):
 #     item = get_object_or_404(Item, slug=slug)
 #     order_qs = Order.objects.filter(

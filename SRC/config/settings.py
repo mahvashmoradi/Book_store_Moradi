@@ -50,8 +50,8 @@ INSTALLED_APPS = [
 
 ]
 # django-allauth config
-LOGIN_REDIRECT_URL = 'home'
-ACCOUNT_LOGOUT_REDIRECT = 'home' # new
+LOGIN_REDIRECT_URL = 'pages:home'
+ACCOUNT_LOGOUT_REDIRECT = 'pages:home' # new
 SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
 'django.contrib.auth.backends.ModelBackend',
