@@ -46,8 +46,6 @@ INSTALLED_APPS = [
     'app.accounts',
     'app.payment',
     'app.pages',
-    'app.cart',
-
 ]
 # django-allauth config
 LOGIN_REDIRECT_URL = 'pages:home'
@@ -81,7 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'app.cart.context_processors.cart',
+                'app.payment.context_processors.cart',
             ],
         },
     },

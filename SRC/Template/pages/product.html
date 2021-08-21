@@ -60,7 +60,7 @@
               </button>
 
             </form> {% endcomment %}
-            <form method="post" action="{% url 'app.cart:add_cart' object.id %}">
+            <form method="post" action="{% url 'pages:product' object.id %}">
                 {{ form }}
                                             {% csrf_token %}
                                             <div class="row">

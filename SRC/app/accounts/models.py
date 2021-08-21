@@ -17,7 +17,7 @@ class CustomUser(AbstractUser):
         verbose_name_plural = 'کاربران'
 
     def __str__(self):
-        return self.email
+        return str(self.email)
 
 
 # Customer
@@ -27,16 +27,20 @@ class Customer(models.Model):
     first_name = models.CharField('نام', max_length=100, blank=True, null=True)
     last_name = models.CharField('نام خانوادگی', max_length=100, blank=True, null=True)
     GENDER_CHOICES = [(Female, 'زن'), (Male, 'مرد')]
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,blank=True, null=True)
     gender = models.CharField('جنسیت', choices=GENDER_CHOICES, max_length=1, blank=True, null=True)
+    device = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         verbose_name = 'مشتری'
         verbose_name_plural = 'مشتریان'
 
     def __str__(self):
-        return str(self.user)
-
+        if self.user:
+            name = self.user
+        else:
+            name = self.device
+        return str(name)
 
 # Address model
 class AddressModel(models.Model):

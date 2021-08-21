@@ -39,7 +39,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link waves-effect" href="#">
+            <a class="nav-link waves-effect" href="{% url 'app.payment:cart' %}">
               <span class="clearfix d-none d-sm-inline-block">
                                 <span class="clearfix d-none d-sm-inline-block"> سبد خرید </span>
                   <i class="fas fa-shopping-cart"></i>
@@ -73,7 +73,8 @@
             </a>
           </li>
                        <li class="nav-item">
-            <a href="{% url 'app.cart:cart_detail' %}" class="nav-link waves-effect">
+            <a href="{% url 'app.payment:cart' %}" class="nav-link waves-effect">
+{#                <a class="nav-link waves-effect" href="{% url 'app.payment:cart' %}">#}
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> سبد خرید </span>
             </a>
