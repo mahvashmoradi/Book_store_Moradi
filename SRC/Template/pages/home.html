@@ -18,21 +18,6 @@
 
                         </li>
                     {% endfor %}
-                    {#            <li class="nav-item">#}
-                    {#                <a class="nav-link active" aria-current="page" href="#">جغرافی</a>#}
-                    {#            </li>#}
-                    {#            <li class="nav-item">#}
-                    {#                <a class="nav-link active" aria-current="page" href="#">تاریخی</a>#}
-                    {#            </li>#}
-                    {#            <li class="nav-item">#}
-                    {#                <a class="nav-link active" aria-current="page" href="#">مذهبی</a>#}
-                    {#            </li>#}
-                    {#            <li class="nav-item">#}
-                    {#                <a class="nav-link active" aria-current="page" href="#">مهندسی</a>#}
-                    {#            </li>#}
-                    {#            <li class="nav-item">#}
-                    {#                <a class="nav-link active" aria-current="page" href="#">زبان های خارجه</a>#}
-                    {#            </li>#}
                 </ul>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent"
@@ -42,34 +27,6 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-                        {#       <form class="form-inline">#}
-                        {#            <div class="md-form my-0">#}
-                        {#              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">#}
-                        {#            </div>#}
-                        {#          </form>#}
-                        {#                <li class="nav-item">#}
-                        {#                    <a class="nav-link active" aria-current="page" href="#">Book Store</a>#}
-                        {#                </li>#}
-                        {#                <li class="nav-item">#}
-                        {#                    <a class="nav-link active" aria-current="page" href="/admin/">Admin</a>#}
-                        {#                </li>#}
-                        {##}
-                        {#                <li class="nav-item dropdown">#}
-                        {#                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
-                        {#                       data-bs-toggle="dropdown" aria-expanded="false">#}
-                        {#                        Username#}
-                        {#                    </a>#}
-                        {#                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">#}
-                        {#                        <li><a class="dropdown-item" href="#">Logout</a></li>#}
-                        {#                        <li><a class="dropdown-item" href="#">change password</a></li>#}
-                        {#                                    <li><hr class="dropdown-divider"></li>#}
-                        {#                                    <li><a class="dropdown-item" href="#">Something else here</a></li>#}
-                        {#                    </ul>#}
-                        {#                </li>#}
-                        {#                        <li class="nav-item">#}
-                        {#                          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>#}
-                        {#                        </li>#}
                     </ul>
                     <form class="d-flex">
                         <input class="form-control me-2" id="search" type="search" placeholder="Search"
@@ -133,11 +90,11 @@
                                     <h4 class="font-weight-bold blue-text">
                                         <strong>
                                             {% if item.discount_price %}
-                                                <p>قیمت با تخفیف: {{ item.discount_price }} تومان</p>
-                                                <p>قیمت واقعی : {{ item.price }} تومان</p>
+                                                <p> {{ item.discount_price }} تومان</p>
+                                                <p><del> {{ item.price }}</del> </p>
                                             {% else %}
 
-                                                {{ item.price }}
+                                                {{ item.price }} تومان
                                             {% endif %}
                                         </strong>
                                     </h4>

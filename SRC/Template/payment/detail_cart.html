@@ -40,21 +40,21 @@
                             <td>{{ item.items.name }} </td>
                             {#                                            <td>{{ item.quantity }}</td>#}
                             <td>
-{#                                <form method="post" action="#">#}
-{#                                    {{ item.items.update_quantity_form.quantity }}#}
-{#                                    {{ item.items.update_quantity_form.override }} {{ item.update_quantity_form.quantity }}#}
-{#                                    {{ item.quantity }}#}
-{#                                    {% csrf_token %}#}
-{#                                    <div class="row">#}
-{#                                        <div class="col">#}
-{#                                            <button type="submit">به روز کن#}
-{#                                            </button>#}
-{#                                        </div>#}
-{#                                        <div class="col delete_input">#}
-{#                                            <button type="button" class="btn btn-danger">پاک کردن متن ورودی</button>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </form>#}
+                                {#                                <form method="post" action="#">#}
+                                {#                                    {{ item.items.update_quantity_form.quantity }}#}
+                                {#                                    {{ item.items.update_quantity_form.override }} {{ item.update_quantity_form.quantity }}#}
+                                {#                                    {{ item.quantity }}#}
+                                {#                                    {% csrf_token %}#}
+                                {#                                    <div class="row">#}
+                                {#                                        <div class="col">#}
+                                {#                                            <button type="submit">به روز کن#}
+                                {#                                            </button>#}
+                                {#                                        </div>#}
+                                {#                                        <div class="col delete_input">#}
+                                {#                                            <button type="button" class="btn btn-danger">پاک کردن متن ورودی</button>#}
+                                {#                                        </div>#}
+                                {#                                    </div>#}
+                                {#                                </form>#}
                                 {{ item.quantity }}
                                 <a href="{% url 'pages:product' item.items.pk %}"
                                    class="btn">به روز کن
@@ -62,23 +62,16 @@
 
                             </td>
                             <td>
-{#                                <form method="post" action="#">#}
-{#                                    {% csrf_token %}#}
-{#                                    <div class="row">#}
-{#                                        <div class="col">#}
-{#                                            <button type="submit" class="btn btn-primary">پاک کردن</button>#}
-{#                                        </div>#}
-{#                                        <div class="col delete_input">#}
-{#                                            <button type="button" class="btn btn-danger">پاک کردن متن ورودی</button>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </form>#}
+
                                 <a href="{% url 'payment:remove_from_cart' item.items.pk %}"
                                    class="btn">پاک کن
                                 </a>
 
                             </td>
-                            <td>{{ item.items.price }}</td>
+                            <td>{% if item.items.discount_price %}
+                               {{ item.items.discount_price }} {% else %}
+                                {{ item.items.price }}
+                                            {% endif %}</td>
                             {#                        <td>{{ item.discount_price }}</td>#}
                             {#                        <td>{{ item.total_discount_price }}</td>#}
                             {#                <td>{{ item.pricediscount }}</td>#}
@@ -89,44 +82,92 @@
                 <tr>
                     <td></td>
                     <td>مجموع</td>
-                    <td></td>
+                    <td>{{ order.get_cart_total }}</td>
                     <td></td>
                     {#                <td></td>#}
                     <td></td>
-                    <td></td>
-                    {#                <td>{{ cart.get_total_discount_price }}</td>#}
-                    <td>{{ order.get_cart_total }}</td>
+                    <td>مجموع با تخفیف</td>
+{#                    <td>{{ order.get_total_discount_price }}</td>#}
+                    <td id="discount_place"></td>
+
                 </tr>
 
                 </tbody>
             </table>
-            {#          <div class="u-cart-blocks-container">#}
-            {#            <div class="u-cart-block u-indent-30">#}
-            {#              <div class="u-cart-block-container u-clearfix">#}
-            {#                <h5 class="u-cart-block-header u-text">Promotion Code</h5>#}
-            {#                <div class="u-cart-block-content u-text">#}
-            {#                  <div class="u-cart-form u-form">#}
-            {#                    <form action="#" method="POST" class="u-clearfix u-form-horizontal u-form-spacing-10 u-inner-form" source="custom" name="form">#}
-            {#                      <div class="u-form-group">#}
-            {#                        <label for="name-5861" class="u-form-control-hidden u-label">Coupon code</label>#}
-            {#                        <input type="text" placeholder="Coupon code" id="name-5861" name="coupon" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">#}
-            {#                      </div>#}
-            {#                      <div class="u-align-left u-form-group u-form-submit">#}
-            {#                        <a href="#" class="u-btn u-btn-submit u-button-style">Apply Coupon</a>#}
-            {#                        <input type="submit" value="submit" class="u-form-control-hidden">#}
-            {#                      </div>#}
-            {#                      <div class="u-form-send-message u-form-send-success">Thank you! Your message has been sent.</div>#}
-            {#                      <div class="u-form-send-error u-form-send-message">Unable to send your message. Please fix errors then try again.</div>#}
-            {#                      <input type="hidden" value="" name="recaptchaResponse">#}
-            {#                    </form>#}
-            {#                  </div>#}
-            {#                </div>#}
-            {#              </div>#}
-            {#            </div>#}
+            <form method="post" action="{% url 'payment:cart' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="u-form-group">
+                        <label for="name-5861" class="u-form-control-hidden u-label">کد تخفیف</label>
+                        <input type="text" placeholder="Coupon code" id="coupon" name="coupon"
+                               class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">
+                    </div>
+                    <div class="col">
+                        <button type="button" id="coupon_button" class="btn btn-primary ">اعمال کد تخفیف</button>
+                    </div>
+{#                    <div class="col">#}
+{#                        <button type="button" class="btn btn-danger">اعمال کد تخفیف</button>#}
+{#                    </div>#}
+                </div>
+            </form>
+            {#                      <div class="u-cart-blocks-container">#}
+            {#                        <div class="u-cart-block u-indent-30">#}
+            {#                          <div class="u-cart-block-container u-clearfix">#}
+            {#                            <h5 class="u-cart-block-header u-text">Promotion Code</h5>#}
+            {#                            <div class="u-cart-block-content u-text">#}
+            {#                              <div class="u-cart-form u-form">#}
+            {#                                <form action="#" method="POST" class="u-clearfix u-form-horizontal u-form-spacing-10 u-inner-form" source="custom" name="form">#}
+            {#                                  <div class="u-form-group">#}
+            {#                                    <label for="name-5861" class="u-form-control-hidden u-label">Coupon code</label>#}
+            {#                                    <input type="text" placeholder="Coupon code" id="name-5861" name="coupon" class="u-border-1 u-border-grey-30 u-input u-input-rectangle" required="">#}
+            {#                                  </div>#}
+            {#                                  <div class="u-align-left u-form-group u-form-submit">#}
+            {#                                    <a href="#" class="u-btn u-btn-submit u-button-style">Apply Coupon</a>#}
+            {#                                    <input type="submit" value="submit" class="u-form-control-hidden">#}
+            {#                                  </div>#}
+            {#                                  <div class="u-form-send-message u-form-send-success">Thank you! Your message has been sent.</div>#}
+            {#                                  <div class="u-form-send-error u-form-send-message">Unable to send your message. Please fix errors then try again.</div>#}
+            {#                                  <input type="hidden" value="" name="recaptchaResponse">#}
+            {#                                </form>#}
+            {#                              </div>#}
+            {#                            </div>#}
+            {#                          </div>#}
+            {#                        </div>#}
             <p><a href="{% url 'pages:home' %}" class="btn btn-primary btn-md my-0 p"> Continue Shopping </a></p>
-            <p><a href="#" class="btn btn-primary btn-md my-0 p">chek out </a></p>
+            <p><a href="{% url 'payment:check-out' %}" class="btn btn-primary btn-md my-0 p">chek out </a></p>
         </div>
+        </div>
+
     {% else %}
         <h1 style="text-align:center;padding: 100px">No Items in cart</h1>
     {% endif %}
 {% endblock %}
+{% block script %}
+
+    $(document).ready(function () {
+    $("#coupon_button").click(function(){
+    input_text = $('#coupon').val()
+    console.log(input_text)
+    // ajax
+     $.post( "{% url 'payment:cart' %}",
+     // $.post( "./")
+    {
+    csrfmiddlewaretoken: '{{ csrf_token }}',
+    "inputText": input_text,  // دیتا در فرم وارد شده
+
+    } ,function( data ) {
+      iziToast.show({
+           title: '',
+          color : 'green',
+           message: data.message
+       });
+  $('#discount_place').html(data.total_discount_value)
+    }
+
+    );
+     task= document.getElementById('coupon');
+    task.value=null;
+    });
+
+    });
+{% endblock script %}

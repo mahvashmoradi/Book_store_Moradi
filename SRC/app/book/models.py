@@ -52,23 +52,18 @@ class BookModel(models.Model):
     #     # return reverse("home", kwargs={'slug': self.slug })
 
     # calculate discount price(both value and percentage)
-    def cal_discount_price(self):
+    def cal_discount_price(self, instance):
         price = self.price
-        # print('chek',self.dis_value.all())
         if self.dis_value.all():
-            if self.dis_value.values('choice_discount')[0]['choice_discount'] == 'V':
-                amount = self.dis_value.values('value')[0]
-                price = price - amount['value']
+            if instance.choice_discount == 'V':
+                amount = instance.value
+                price = price - amount
             else:
-                percent = self.dis_value.values('percent')[0]
+                percent = instance.percent
                 print('p', percent)
-                price = (100 - percent['percent']) * price / 100
-        if price != self.price:
-            self.price_discount = price
-        else:
-            self.price_discount = self.price
-        self.save()
-        return self.price_discount
+                price = (100 - percent) * price / 100
+
+        return price
 
     # get category of book
     def get_category_display(self):

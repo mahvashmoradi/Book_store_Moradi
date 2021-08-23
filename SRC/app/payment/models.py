@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.db import models
 from app.accounts.models import CustomUser, Customer
 
@@ -50,38 +52,35 @@ class Invoice(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.DO_NOTHING, related_name='invoices',
                                  verbose_name='کاربر', null=True)
     invoice_date = models.DateTimeField('تاریخ سفارش', auto_now_add=True)
-    invoice_complete_date = models.DateTimeField('تاریخ تکمیل سفارش',blank=True, null=True )
-    # total = models.PositiveBigIntegerField('مجموع',blank=True, null=True )
-    # total_with_discount = models.PositiveBigIntegerField('قابل پرداخت', blank=True, null=True)
+    invoice_complete_date = models.DateTimeField('تاریخ تکمیل سفارش', blank=True, null=True)
+    total = models.PositiveBigIntegerField('مجموع', blank=True, null=True)
+    total_with_discount = models.PositiveBigIntegerField('قابل پرداخت', blank=True, null=True)
     status = models.CharField(choices=INVOICE_CHOICES, max_length=1, default=ORDER, verbose_name='وضعیت سفارش')
     check_discount = models.ForeignKey(Coupons, blank=True, null=True, on_delete=models.DO_NOTHING,
                                        related_name='coupons_code')
-
-    # def calculate(self):
-    #     qs_value = Coupons.objects.filter(finished__gte=self.invoice_complete_date,
-    #                                       started__lte=self.invoice_complete_date)
-    #     total = self.total
-    #     data = {'qs': qs_value}
-    #     # if qs_percent:
-    #     #     total = (100 - qs_percent.values('percent')[0]['percent']) * total / 100
-    #     #     self.discount_percent = DiscountCodePercent.objects.get(finished__gte=self.invoice_complete_date,
-    #     #                                                             started__lte=self.invoice_complete_date)
-    #     #     self.save()
-    #
-    #     if qs_value:
-    #         if 'qs' == Coupons.VALUE:
-    #             total = total - qs_value.values('amount')[0]['amount']
-    #         else:
-    #             total = (100 - qs_value.values('percent')[0]['percent']) * total / 100
-    #
-    #     self.total_with_discount = total
-    #     self.save()
-    #     return self.total_with_discount
 
     @property
     def get_cart_total(self):
         order_items = self.Items.all()
         total = sum([item.get_total for item in order_items])
+        self.total = total
+        self.save()
+        return total
+
+    def get_total_discount_price(self, copoun):
+        total = self.total
+        # print(total)
+        # print(copoun)
+        qs_value = copoun
+        data = {'qs': qs_value}
+        print(data)
+        print(qs_value)
+
+        if qs_value.choice_discount == Coupons.VALUE:
+            total = total - qs_value.value
+        else:
+            total = (100 - qs_value.percent) * total / 100
+
         return total
 
     @property
@@ -100,10 +99,10 @@ class Invoice(models.Model):
 
 # Item in Invoice (factor detail)
 class InvoiceLine(models.Model):
-    invoice = models.ForeignKey(Invoice, on_delete=models.PROTECT, related_name='Items',null=True,
+    invoice = models.ForeignKey(Invoice, on_delete=models.PROTECT, related_name='Items', null=True,
                                 verbose_name='شماره فاکتور')
-    items = models.ForeignKey('book.BookModel', on_delete=models.DO_NOTHING,null=True, verbose_name='محصول')
-    quantity = models.IntegerField('تعداد',null=True )
+    items = models.ForeignKey('book.BookModel', on_delete=models.DO_NOTHING, null=True, verbose_name='محصول')
+    quantity = models.IntegerField('تعداد', null=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def add_to_cart(self):
@@ -111,7 +110,11 @@ class InvoiceLine(models.Model):
 
     @property
     def get_total(self):
-        total = self.items.price * self.quantity
+        if self.items.discount_price:
+            total = self.items.discount_price * self.quantity
+        else:
+            total = self.items.price * self.quantity
+
         return total
 
     class Meta:

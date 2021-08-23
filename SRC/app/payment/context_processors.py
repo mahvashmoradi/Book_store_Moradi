@@ -1,6 +1,6 @@
 # from app.cart.cart import Cart
-from app.payment.views import cart_detail
+from app.payment.views import Cart
 
 
 def cart(request):
-    return {'cart': cart_detail}
+    return {'cart': Cart}
