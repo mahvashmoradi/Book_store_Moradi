@@ -56,6 +56,13 @@ AUTHENTICATION_BACKENDS = (
 'allauth.account.auth_backends.AuthenticationBackend', # new
 )
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # new
+ACCOUNT_USERNAME_REQUIRED = False # new
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False # new
+ACCOUNT_AUTHENTICATION_METHOD = 'email' # new
+ACCOUNT_EMAIL_REQUIRED = True # new
+ACCOUNT_UNIQUE_EMAIL = True # new
+# ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS (=True)
+# ACCOUNT_FORMS = {'signup': 'mysite.forms.MyCustomSignupForm'}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

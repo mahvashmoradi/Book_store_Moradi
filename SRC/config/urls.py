@@ -25,7 +25,7 @@ urlpatterns = [
     path('', include('app.pages.urls', namespace='pages')),
     path('book/', include('app.book.urls')),
     path('accounts/', include('allauth.urls')),  # new
-    path('accounts/', include('app.accounts.urls')),
+    path('accounts/', include('app.accounts.urls', namespace='accounts')),
     path('payment/', include('app.payment.urls', namespace='payment')),
 ]
 urlpatterns += staticfiles_urlpatterns()

@@ -8,8 +8,8 @@
 {{ form.as_p }}
 <button class="btn btn-success ml-2" type="submit">وارد شوید</button>
 </form>
-    <a class="btn btn-danger ml-2" href="{% url 'account_signup' %}">ثبت نام کنید</a>
-    <a class="btn btn-dark ml-2" href="#">فراموشی رمز ورود</a>
+    <a class="btn btn-danger ml-2" href="{% url 'app.accounts:customer-sign-up' %}">ثبت نام کنید</a>
+    <a class="btn btn-dark ml-2" href="{% url 'account_reset_password' %}">فراموشی رمز ورود</a>
 
     </div>
 {% endblock content %}

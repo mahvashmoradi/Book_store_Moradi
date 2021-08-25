@@ -41,7 +41,7 @@ class BookModel(models.Model):
     created = models.DateField('تاریخ ثبت کتاب', auto_now_add=True)
     categories = models.ManyToManyField(CategoryModel, blank=False, related_name='category', verbose_name='گروه')
     inventory = models.IntegerField('موجودی')
-    image = models.ImageField(upload_to='book/', null=True, default='0.png')
+    image = models.ImageField(upload_to='book/', null=True, blank=True)
 
     class Meta:
         verbose_name = 'کتاب'
@@ -54,15 +54,17 @@ class BookModel(models.Model):
     # calculate discount price(both value and percentage)
     def cal_discount_price(self, instance):
         price = self.price
-        if self.dis_value.all():
-            if instance.choice_discount == 'V':
-                amount = instance.value
-                price = price - amount
-            else:
-                percent = instance.percent
-                print('p', percent)
-                price = (100 - percent) * price / 100
+        if instance.choice_discount == 'V':
+            amount = instance.value
+            print('v')
+            price = price - amount
 
+        else:
+            percent = instance.percent
+            print('p', percent)
+            price = (100 - percent) * price / 100
+        self.discount_price = price
+        self.save()
         return price
 
     # get category of book

@@ -32,8 +32,8 @@ class Coupons(models.Model):
 class Discount(models.Model):
     book = models.ForeignKey('book.BookModel', on_delete=models.CASCADE, related_name='dis_value',
                              verbose_name='نام کتاب')
-    value = models.PositiveBigIntegerField('مقدارتخفیف', blank=True, null=True)
-    percent = models.FloatField('درصد تخفیف', blank=True, null=True)
+    value = models.PositiveBigIntegerField('مقدارتخفیف', default=0)
+    percent = models.FloatField('درصد تخفیف', default=0)
     choice_discount = models.CharField(choices=Coupons.DISCOUNT_CHOICES, max_length=1, default=Coupons.VALUE)
 
     class Meta:
@@ -57,7 +57,7 @@ class Invoice(models.Model):
     total_with_discount = models.PositiveBigIntegerField('قابل پرداخت', blank=True, null=True)
     status = models.CharField(choices=INVOICE_CHOICES, max_length=1, default=ORDER, verbose_name='وضعیت سفارش')
     check_discount = models.ForeignKey(Coupons, blank=True, null=True, on_delete=models.DO_NOTHING,
-                                       related_name='coupons_code')
+                                       related_name='coupons_code',)
 
     @property
     def get_cart_total(self):
