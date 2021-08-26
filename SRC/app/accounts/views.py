@@ -44,3 +44,4 @@ class StaffSignUp(SignupView):
         ret = super(StaffSignUp, self).get_context_data(**kwargs)
         ret.update(self.kwargs)
         return ret
+

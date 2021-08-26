@@ -1,4 +1,6 @@
 {% extends "pages/base.html" %}
+{% load static %}
+
 {% block title %} cart {% endblock %}
 {% block content %}
     {% if order != None %}
@@ -36,7 +38,9 @@
                     {% with product=item.product %}
                         <tr>
                             <th scope="row">{{ forloop.counter }}</th>
-                            <td><img src="{{ item.items.image.url }}" class="card-img-top"></td>
+{#                            <td><img src="{{ item.items.image.url }}" class="card-img-top"></td>#}
+                            <td> {% if item.items.image %}  <img src="{{ item.items.image.url }}" class="card-img-top">
+                                    {% else %} <img src="{% static 'my_img/0.png' %}" class="card-img-top"> {% endif %}</td>
                             <td>{{ item.items.name }} </td>
                             {#                                            <td>{{ item.quantity }}</td>#}
                             <td>

@@ -76,19 +76,19 @@ def remove_from_cart(request, pk):
     return redirect('payment:cart')
 
 # """موجودی انبار را جک میکند و پیام میدهد و در صورت نبود مشکل هدایت میکند"""
-# class CheckOut(LoginRequiredMixin, View):
-class CheckOut(View):
+class CheckOut(LoginRequiredMixin, View):
+# class CheckOut(View):
     # def test_func(self):  # new
     #     obj = self.get_object()
     #     return obj.customer == self.request.user
 
     def get(self, request):
         # customer = request.user.customer
-        try:
-            customer = request.user.customer
-        except:
-            device = request.COOKIES['device']
-            customer = Customer.objects.get(device=device)
+        # try:
+        customer = request.user.customer
+        # except:
+        #     device = request.COOKIES['device']
+        #     customer = Customer.objects.get(device=device)
         order = Invoice.objects.get(customer=customer, status='O')
         order_item = InvoiceLine.objects.filter(invoice=order)
         isOk = True

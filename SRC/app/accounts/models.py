@@ -27,7 +27,7 @@ class Customer(models.Model):
     first_name = models.CharField('نام', max_length=100, blank=True, null=True)
     last_name = models.CharField('نام خانوادگی', max_length=100, blank=True, null=True)
     GENDER_CHOICES = [(Female, 'زن'), (Male, 'مرد')]
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,blank=True, null=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     gender = models.CharField('جنسیت', choices=GENDER_CHOICES, max_length=1, blank=True, null=True)
     device = models.CharField(max_length=200, null=True, blank=True)
 
@@ -42,9 +42,11 @@ class Customer(models.Model):
             name = self.device
         return str(name)
 
+
 # Address model
 class AddressModel(models.Model):
-    customer = models.ForeignKey(Customer, blank=False, on_delete=models.CASCADE, verbose_name='کاربر')
+    customer = models.ForeignKey(Customer, blank=False, related_name='inf_address', on_delete=models.CASCADE,
+                                 verbose_name='کاربر')
     city = models.ForeignKey('CityModel', verbose_name='شهر', on_delete=models.PROTECT, related_name='city')
     province = models.ForeignKey('ProvinceModel', on_delete=models.PROTECT, related_name='province',
                                  verbose_name='استان')

@@ -1,0 +1,85 @@
+{% extends 'pages/base.html' %}
+{% block title %}
+    Customer Info
+{% endblock title %}
+{% block content %}
+    <div class="container">
+        <h2>اطلاعات فردی</h2>
+        <button class="btn btn-light" id=delete_button" type="button">پاک کردن</button>
+        <table class="table table-info table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">استان</th>
+                <th scope="col">شهر</th>
+                <th scope="col">آدرس</th>
+                <th scope="col">کد پستی</th>
+                <th scope="col">تلفن</th>
+                <th scope="col">ویرایش</th>
+                <th scope="col">حذف</th>
+            </tr>
+            </thead>
+            <tbody id="address_table">
+
+            Hi = {{ user }}
+            {% for obj in object.inf_address %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ obj.province }}</td>
+                    <td>{{ obj.city }}</td>
+                    <td>{{ obj.address }}</td>
+
+                    <td>{{ obj.postal_code }}</td>
+                    <td>{{ obj.phone_number }}</td>
+                    <td><a href="#">ویرایش</a></td>
+                    {#                <td> <button class="btn btn-light" id=delete_button" type="button">پاک کردن</button>#}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {#            <div class="row">#}
+    {#            <div class="col">#}
+    {#                <button class="btn btn-warning"> <a href="{% url 'download-tasks' %}"#}
+    {#                                                    download="Task_list.json">download Tasks in json format</a></button>#}
+    {#            </div >#}
+    {#            </div >#}
+
+
+    {#</div>#}
+
+{% endblock content %}
+
+{% block script %}
+    $(document).ready(function () {
+    console.log('input_text')
+
+    //   $("#delete_button").click(function () {#}
+    console.log('input_text222')
+
+    $.ajax({
+    url: "{% url 'accounts:complete-api-info' %}",
+    type: 'GET',
+    dataType: 'json', // added data type
+    success: function (data) {
+    console.log(data);
+    iziToast.show({
+    title: 'Hey',
+    color: 'green',
+    message: data
+    });
+    //          $('#discount_place').html(data.total_discount_value)
+    $($(this).closest('div')).append('data')
+    $.each(data.inf_address, function (index, value) {
+    console.log('index', index)
+    console.log('value', value)
+
+    $('#address_table').append('<tr><td>'+(index+1)+'</td><td> '+value.province+'</td><td> '+value.city+'</td><td> '+value.address+'</td><td> '+value.postal_code+'</td><td> '+value.phone_number+'</td><td> '+value.id+'</td><td> '+value.id+'</td></tr>')
+    })
+
+    }
+    });
+    });
+{% endblock script %}

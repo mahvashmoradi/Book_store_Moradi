@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Coupons, Discount, Invoice, InvoiceLine
 from app.book.serializer import BookSerializer
 
+
 class CouponsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coupons
