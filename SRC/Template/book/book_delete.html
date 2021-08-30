@@ -1,0 +1,17 @@
+{% extends 'pages/base.html' %}
+    {% block title %}
+       Delete Book
+
+    {% endblock title %}
+{% block content %}
+<h1>حذف</h1>
+<form action="" method="post">{% csrf_token %}
+<p>از حذف کتاب {{ task.title }} مطمئن هستید؟ </p>
+<button class="btn btn-danger ml-2" type="submit">بله</button>
+</form>
+{% endblock content %}
+
+{#<form method="post">{% csrf_token %}#}
+{#    <p>Are you sure you want to delete "{{ object }}"?</p>#}
+{#    <input type="submit" value="Confirm">#}
+{#</form>#}

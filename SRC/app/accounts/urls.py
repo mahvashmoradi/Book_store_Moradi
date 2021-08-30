@@ -13,5 +13,6 @@ urlpatterns = [
     path('complete-info/', customer_info_view, name='complete-info'),
     path('complete-api-info/', UserInfo.as_view(), name='complete-api-info'),
     path('address-info/', AddressInfo.as_view(), name='address-info'),
+    path('staff/', StaffView.as_view(), name='staff_menu'),
 
 ]

@@ -5,12 +5,13 @@ from django.db import models
 from django.shortcuts import redirect
 
 from app import payment
+from app.book.manager import CategoriesManager
 
 
 class CategoryModel(models.Model):
     # name of Category
     name = models.CharField('نام', max_length=50)
-
+    categories_manager = CategoriesManager()
     class Meta:
         verbose_name = 'دسته بندی'
         verbose_name_plural = 'دسته بندی ها'

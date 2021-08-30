@@ -29,6 +29,7 @@ class UserInfo(RetrieveUpdateAPIView):
 
 class AddressInfo(RetrieveUpdateAPIView):
     serializer_class = AddressSerializer
+
     # queryset = AddressModel.objects.all()
 
     def get_queryset(self):
@@ -53,4 +54,7 @@ def customer_info_view(request):
     #     print('get',r)
     # if r.status_code == 200:
     #     return HttpResponse(r)
-    return render(request,'account/customer_profile.html',{})
+    customer = request.user.customer
+    user_info = Customer.objects.get(user__email=customer)
+    address_info = AddressModel.objects.filter(customer__user__email=customer)
+    return render(request, 'account/customer_profile.html', {'user_info': user_info, 'address': address_info})

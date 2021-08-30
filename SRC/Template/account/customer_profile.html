@@ -4,40 +4,224 @@
 {% endblock title %}
 {% block content %}
     <div class="container">
+        <button class="btn btn-primary" id="edit_button" type="button">ذخیره کردن</button>
+
         <h2>اطلاعات فردی</h2>
-        <button class="btn btn-light" id=delete_button" type="button">پاک کردن</button>
-        <table class="table table-info table-striped">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">استان</th>
-                <th scope="col">شهر</th>
-                <th scope="col">آدرس</th>
-                <th scope="col">کد پستی</th>
-                <th scope="col">تلفن</th>
-                <th scope="col">ویرایش</th>
-                <th scope="col">حذف</th>
-            </tr>
-            </thead>
-            <tbody id="address_table">
+        <div class="row">
+{#            <div class="col-6">#}
+{#                <label for="name"> نام کاربری</label>#}
+{#                <input type="text" id="username"  readonly value="name">#}
+{#            </div>#}
+            <div class="col-6">
+                <span>نام کاربری</span>
+                <span>{{ user }}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label for="first_name">نام</label>
+                <input type="text" id="first_name" value={{ user_info.first_name }} >
+            </div>
+            <div class="col-6">
+                <label for="last_name">نام خانوادگی</label>
+                <input type="text" id="last_name" value={{ user_info.last_name }}>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label for="gender">جنسیت</label>
+                <input type="text" id="gender" value={{ user_info.gender }}>
+            </div>
+        </div>
 
-            Hi = {{ user }}
-            {% for obj in object.inf_address %}
-                <tr>
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ obj.province }}</td>
-                    <td>{{ obj.city }}</td>
-                    <td>{{ obj.address }}</td>
+        <!-- Editable table -->
+        <div class="card">
+            <h3 class="card-header text-center font-weight-bold text-uppercase py-4">
+                جدول آدرس ها
+            </h3>
+            <div class="card-body">
+                <div id="table" class="table-editable">
+      <span class="table-add float-right mb-3 mr-2"
+      ><a href="#!" class="text-success"
+      ><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a
+      ></span>
+                    <table class="table table-bordered table-responsive-md table-striped text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">استان</th>
+                            <th scope="col">شهر</th>
+                            <th scope="col">آدرس</th>
+                            <th scope="col">کد پستی</th>
+                            <th scope="col">تلفن</th>
+                            <th scope="col">حذف</th>
+                            <th scope="col">آدرس منتخب</th>
 
-                    <td>{{ obj.postal_code }}</td>
-                    <td>{{ obj.phone_number }}</td>
-                    <td><a href="#">ویرایش</a></td>
-                    {#                <td> <button class="btn btn-light" id=delete_button" type="button">پاک کردن</button>#}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                            {#            <th class="text-center">Person Name</th>#}
+                            {#            <th class="text-center">Age</th>#}
+                            {#            <th class="text-center">Company Name</th>#}
+                            {#            <th class="text-center">Country</th>#}
+                            {#            <th class="text-center">City</th>#}
+                            {#            <th class="text-center">Sort</th>#}
+                            {#            <th class="text-center">Remove</th>#}
+                            {#          </tr>#}
+                        </thead>
+
+                        <tbody>
+                        {% for obj in address %}
+
+                            <tr>
+                            <td class="pt-3-half">{{ forloop.counter }}</td>
+                            <td class="pt-3-half"><input type="text" id="province{{ forloop.counter }}"
+                                                         value={{ obj.province }}></td>
+                            <td class="pt-3-half"><input type="text" id="city{{ forloop.counter }}"
+                                                         value={{ obj.city }}></td>
+                            <td class="pt-3-half"><input type="text" id="address{{ forloop.counter }}"
+                                                         value={{ obj.address }}></td>
+                            <td class="pt-3-half"><input type="text" id="postal{{ forloop.counter }}"
+                                                         value={{ obj.postal_code }}></td>
+                            <td class="pt-3-half"><input type="text" id="phone{{ forloop.counter }}"
+                                                         value={{ obj.phone_number }}></td>
+
+                            {#            <td class="pt-3-half">#}
+                            {#              <span class="table-up"#}
+                            {#                ><a href="#!" class="indigo-text"#}
+                            {#                  ><i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a#}
+                            {#              ></span>#}
+                            {#              <span class="table-down"#}
+                            {#                ><a href="#!" class="indigo-text"#}
+                            {#                  ><i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a#}
+                            {#              ></span>#}
+                            {#            </td>#}
+                            <td>
+              <span class="table-remove"
+              ><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">
+                  پاک کردن
+                </button></span
+              >
+                            </td>
+                            <td class="pt-3-half"></td>
+
+                        {% endfor %}
+
+                        </tr>
+                        {#          <!-- This is our clonable table line -->#}
+                        {#          <tr>#}
+                        {#            <td class="pt-3-half" contenteditable="true">Guerra Cortez</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">45</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">Insectus</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">USA</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">San Francisco</td>#}
+                        {#            <td class="pt-3-half">#}
+                        {#              <span class="table-up"#}
+                        {#                ><a href="#!" class="indigo-text"#}
+                        {#                  ><i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a#}
+                        {#              ></span>#}
+                        {#              <span class="table-down"#}
+                        {#                ><a href="#!" class="indigo-text"#}
+                        {#                  ><i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a#}
+                        {#              ></span>#}
+                        {#            </td>#}
+                        {#            <td>#}
+                        {#              <span class="table-remove"#}
+                        {#                ><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">#}
+                        {#                  Remove#}
+                        {#                </button></span#}
+                        {#              >#}
+                        {#            </td>#}
+                        {#          </tr>#}
+                        {#          <!-- This is our clonable table line -->#}
+                        {#          <tr>#}
+                        {#            <td class="pt-3-half" contenteditable="true">Guadalupe House</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">26</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">Isotronic</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">Germany</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">Frankfurt am Main</td>#}
+                        {#            <td class="pt-3-half">#}
+                        {#              <span class="table-up"#}
+                        {#                ><a href="#!" class="indigo-text"#}
+                        {#                  ><i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a#}
+                        {#              ></span>#}
+                        {#              <span class="table-down"#}
+                        {#                ><a href="#!" class="indigo-text"#}
+                        {#                  ><i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a#}
+                        {#              ></span>#}
+                        {#            </td>#}
+                        {#            <td>#}
+                        {#              <span class="table-remove"#}
+                        {#                ><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">#}
+                        {#                  Remove#}
+                        {#                </button></span#}
+                        {#              >#}
+                        {#            </td>#}
+                        {#          </tr>#}
+                        {#          <!-- This is our clonable table line -->#}
+                        {#          <tr class="hide">#}
+                        {#            <td class="pt-3-half" contenteditable="true">Elisa Gallagher</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">31</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">Portica</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">United Kingdom</td>#}
+                        {#            <td class="pt-3-half" contenteditable="true">London</td>#}
+                        {#            <td class="pt-3-half">#}
+                        {#              <span class="table-up"#}
+                        {#                ><a href="#!" class="indigo-text"#}
+                        {#                  ><i class="fas fa-long-arrow-alt-up" aria-hidden="true"></i></a#}
+                        {#              ></span>#}
+                        {#              <span class="table-down"#}
+                        {#                ><a href="#!" class="indigo-text"#}
+                        {#                  ><i class="fas fa-long-arrow-alt-down" aria-hidden="true"></i></a#}
+                        {#              ></span>#}
+                        {#            </td>#}
+                        {#            <td>#}
+                        {#              <span class="table-remove"#}
+                        {#                ><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">#}
+                        {#                  Remove#}
+                        {#                </button></span#}
+                        {#              >#}
+                        {#            </td>#}
+                        {#          </tr>#}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Editable table -->
+
+
+        {##}
+        {#        <button class="btn btn-light" id=add_address" type="button">افزودن آدرس</button>#}
+        {#        <table class="table table-info table-striped">#}
+        {#            <thead>#}
+        {#            <tr>#}
+        {#                <th scope="col">#</th>#}
+        {#                <th scope="col">استان</th>#}
+        {#                <th scope="col">شهر</th>#}
+        {#                <th scope="col">آدرس</th>#}
+        {#                <th scope="col">کد پستی</th>#}
+        {#                <th scope="col">تلفن</th>#}
+        {#                <th scope="col">حذف</th>#}
+        {#                <th scope="col">آدرس منتخب</th>#}
+        {#            </tr>#}
+        {#            </thead>#}
+        {#            <tbody id="address_table">#}
+        {##}
+        {#            Hi = {{ user }}#}
+        {#            {% for obj in object.inf_address %}#}
+        {#                <tr>#}
+        {#                    <th scope="row">{{ forloop.counter }}</th>#}
+        {#                    <td>{{ obj.province }}</td>#}
+        {#                    <td>{{ obj.city }}</td>#}
+        {#                    <td>{{ obj.address }}</td>#}
+        {##}
+        {#                    <td>{{ obj.postal_code }}</td>#}
+        {#                    <td>{{ obj.phone_number }}</td>#}
+        {#                    <td><a href="#">ویرایش</a></td>#}
+        {#                <td> <button class="btn btn-light" id=delete_button" type="button">پاک کردن</button>#}
+        {#                    </td>#}
+        {#                </tr>#}
+        {#            {% endfor %}#}
+        {#            </tbody>#}
+        {#        </table>#}
     </div>
 
     {#            <div class="row">#}
@@ -53,33 +237,82 @@
 {% endblock content %}
 
 {% block script %}
-    $(document).ready(function () {
+$(document).ready(function () {
     console.log('input_text')
 
-    //   $("#delete_button").click(function () {#}
-    console.log('input_text222')
+    const tableID = $('#table');
+    var count = tableID.find('tbody tr').length + 1
+    const newTr = `
+    <tr class="hide">
+            <td class="pt-3-half"> {{ count }}</td>
+        <td class="pt-3-half"><input type="text" id="province{{ count }}"></td>
+        <td class="pt-3-half"><input type="text" id="city{{ count }}"></td>
+        <td class="pt-3-half"><input type="text" id="address{{ count }}"></td>
+        <td class="pt-3-half"><input type="text" id="postal{{ count }}"></td>
+        <td class="pt-3-half"><input type="text" id="phone{{ count }}"></td>
 
-    $.ajax({
-    url: "{% url 'accounts:complete-api-info' %}",
-    type: 'GET',
-    dataType: 'json', // added data type
-    success: function (data) {
-    console.log(data);
-    iziToast.show({
-    title: 'Hey',
-    color: 'green',
-    message: data
-    });
-    //          $('#discount_place').html(data.total_discount_value)
-    $($(this).closest('div')).append('data')
-    $.each(data.inf_address, function (index, value) {
-    console.log('index', index)
-    console.log('value', value)
+        <td>
+    <span class="table-remove"
+    ><button
+            type="button"
+            class="btn btn-danger btn-rounded btn-sm my-0 waves-effect waves-light"
+    >
+        پاک کردن
+      </button></span
+    >
+        </td>
+        <td class="pt-3-half"></td>
 
-    $('#address_table').append('<tr><td>'+(index+1)+'</td><td> '+value.province+'</td><td> '+value.city+'</td><td> '+value.address+'</td><td> '+value.postal_code+'</td><td> '+value.phone_number+'</td><td> '+value.id+'</td><td> '+value.id+'</td></tr>')
-    })
+    </tr>
+    `;
 
-    }
+    console.log(count)
+    $('.table-add').on('click', 'i', () => {
+        $('tbody').append(newTr);
     });
+    tableID.on('click', '.table-remove', function () {
+        $(this).parents('tr').detach();
     });
+    // $EXPORT.text(JSON.stringify(data));
+    //     name: $("#name").val(),
+    const data = [];
+
+
+    $("#edit_button").click(function () {
+        for (let i = 1; i < count; i++) {
+
+            info_address = {
+                province: $("#province" + i).val(),
+                city: $("#city" + i).val(),
+                address: $("#address" + i).val(),
+                postal: $("#postal" + i).val(),
+                phone: $("#phone" + i).val()
+            }
+            //  text += cars[i] + "<br>";
+            console.log(info_address)
+            data.push(info_address)
+        }
+
+        console.log(data)
+        send_data = {
+            first_name: $("#first_name").val(),
+            last_name: $("#last_name").val(),
+            gender: $("#gender").val(),
+            inf_address: data
+        }
+        console.log(send_data)
+
+        $.ajax({
+            url: "{% url 'accounts:complete-api-info' %}",
+            type: "PUT",
+            data: JSON.stringify(send_data),
+          //  data: { "data":JSON.stringify(send_data), "username": "customer@gmail.com","password": "';lkjhgfdsa"},
+
+            processData: false,
+            contentType: "application/json; charset=UTF-8",
+        });
+
+    });
+});
+
 {% endblock script %}

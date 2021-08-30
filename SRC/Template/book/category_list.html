@@ -1,0 +1,101 @@
+{% extends 'pages/base.html' %}
+    {% block title %}
+      Categories
+
+    {% endblock title %}
+{% block content %}
+
+        <div class="container">
+     <h2>دسته بندی ها</h2>
+
+
+    <table class="table table-info table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">دسته بندی</th>
+            <th scope="col">ویرایش</th>
+            <th scope="col">پاک کردن</th>
+            <th scope="col">جزییات دسته بندی</th>
+        </tr>
+        </thead>
+        <tbody>
+{#{% for obj in object_list %}#}
+{% for obj in full_categories %}
+<tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ obj.name|title }}</td>
+                <td><a href="{% url 'book:categories_edit' obj.pk %}">ویرایش</a> </td>
+               <td> <a href="{% url 'book:categories_delete' obj.pk %}">پاک کردن</a> </td>
+                 <td> <a href="{% url 'book:categories_item' obj.pk %}">جزببات دسته بندی</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="container">
+    <h2>دسته بندی های خالی</h2>
+    <table class="table table-danger table-striped">
+               <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">دسته بندی</th>
+            <th scope="col">ویرایش</th>
+            <th scope="col">پاک کردن</th>
+            <th scope="col">جزببات</th>
+        </tr>
+        </thead>
+        <tbody>
+{#{% for obj in object_list %}#}
+{% for obj in empty_categories %}
+<tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ obj.name|title }}</td>
+                <td><a href="{% url 'book:categories_edit' obj.pk %}">ویرایش</a> </td>
+               <td> <a href="{% url 'book:categories_delete' obj.pk %}">حذف</a> </td>
+                 <td> <a href="{% url 'book:categories_item' obj.pk %}">جزییات</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        <a href="{% url 'accounts:staff_menu'  %}" class="btn btn-danger ml-2" type="submit">عقب</a>
+
+</div>
+{#    <h2>Full Category</h2>#}
+{#{% for obj in object_list %}#}
+{#{% for obj in full_categories %}#}
+{#<div class="card">#}
+{#            <div class="card-header">#}
+{#                <span class="font-weight-bold">{{ obj.name }}</span>#}
+{#            </div>#}
+{#            <div class="card-footer text-center text-muted">#}
+{#                <a href="{% url 'categories_edit' obj.pk %}">Edit</a> |#}
+{#                <a href="{% url 'categories_delete' obj.pk %}">Delete</a> |#}
+{#                    <a href="{% url 'categories_item' obj.pk %}">See Categories</a>#}
+{#            </div>#}
+{#        </div>#}
+{#        <br/>#}
+{##}
+{#{% endfor %}#}
+{#    <br>#}
+{#    <h2>EmptyCategory</h2>#}
+{##}
+{#    {% for obj in empty_categories %}#}
+{#<div class="card">#}
+{#            <div class="card-header">#}
+{#                <span class="font-weight-bold">{{ obj.name }}</span>#}
+{#            </div>#}
+{#            <div class="card-footer text-center text-muted">#}
+{#                <a href="{% url 'categories_edit' obj.pk %}">Edit</a> |#}
+{#                <a href="{% url 'categories_delete' obj.pk %}">Delete</a> |#}
+{#                    <a href="{% url 'categories_item' obj.pk %}">See Categories</a>#}
+{#            </div>#}
+{#        </div>#}
+{#        <br/>#}
+{##}
+{#{% endfor %}#}
+
+{% endblock content%}

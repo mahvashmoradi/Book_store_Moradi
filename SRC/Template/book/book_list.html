@@ -1,0 +1,125 @@
+{% extends 'pages/base.html' %}
+    {% block title %}
+        Books
+    {% endblock title %}
+{% block content %}
+    <div class="container" dir="rtl">
+    <h2>لیست کتاب ها</h2>
+
+    <table class="table table-info table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">کتاب</th>
+            <th scope="col">نویسنده</th>
+            <th scope="col">قیمت</th>
+            <th scope="col">تعداد</th>
+            <th scope="col">قیمت با تخفیف</th>
+            <th scope="col">ویرایش</th>
+            <th scope="col">پاک کردن</th>
+            <th scope="col">جزییات</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for obj in object_list %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ obj.name|title }}</td>
+                <td>{{ obj.author.name }}</td>
+                <td>{{ obj.price }}</td>
+                <td>{{ obj.inventory }}</td>
+                <td>{{ obj.discount_price }}</td>
+                <td><a href="{% url 'book:book_edit' obj.pk %}">ویرایش</a></td>
+                <td><a href="{% url 'book:book_delete' obj.pk %}">پاک کردن</a></td>
+                <td><a href="{% url 'book:book_detail' obj.pk %}">جزییات</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <br>
+    <br>
+    <br>
+    <a href="{% url 'accounts:staff_menu'  %}" class="btn btn-danger ml-2" type="submit">عقب</a>
+
+{#    <div class="container">#}
+{#    <h2> Expired Task</h2>#}
+{#    <table class="table table-danger table-striped">#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th scope="col">#</th>#}
+{#            <th scope="col">Task</th>#}
+{#            <th scope="col">Priority</th>#}
+{#            <th scope="col">Due date</th>#}
+{#            <th scope="col">Time left</th>#}
+{#            <th scope="col">Edit</th>#}
+{#            <th scope="col">Delete</th>#}
+{#            <th scope="col">See Task Detail</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for obj in expired_task %}#}
+{#            <tr>#}
+{#                <th scope="row">{{ forloop.counter }}</th>#}
+{#                <td>{{ obj.title|title }}</td>#}
+{#                <td>{{ obj.priority }}</td>#}
+{#                <td>{{ obj.due_date }}</td>#}
+{#                <td>{{ obj.due_date | timesince }}</td>#}
+{#                <td><a href="{% url 'task_edit' obj.pk %}">Edit</a></td>#}
+{#                <td><a href="{% url 'task_delete' obj.pk %}">Delete</a></td>#}
+{#                <td><a href="{% url 'task_detail' obj.pk %}">Task detail</a></td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
+{#            <div class="row">#}
+{#            <div class="col">#}
+{#                <button class="btn btn-warning"> <a href="{% url 'download-tasks' %}"#}
+{#                                                    download="Task_list.json">download Tasks in json format</a></button>#}
+{#            </div >#}
+{#            </div >#}
+{##}
+{##}
+{#</div>#}
+
+    {##}
+    {#{% for obj in object_list %}#}
+    {#{% for obj in live_task %}#}
+    {#<div class="card">#}
+    {#            <div class="card-header">#}
+    {#                <span class="font-weight-bold">{{ obj.title|title }}</span>#}
+    {#                <span class="font-weight-bold">{{ obj.due_date }}</span>#}
+    {#                <span class="text-muted">by {{ obj.author }} |#}
+    {#                    {{ obj.date }}</span>#}
+    {#            </div>#}
+    {#            <div class="card-body">#}
+    {#                {{ obj.description }}#}
+    {#            </div>#}
+    {#            <div class="card-footer text-center text-muted">#}
+    {#                <a href="#">Edit</a> | <a href="#">Delete</a>#}
+    {#            </div>#}
+    {#            <div class="card-footer text-center text-muted">#}
+    {#                    <a href="{% url 'task_edit' obj.pk %}">Edit</a> |#}
+    {#                <a href="{% url 'task_delete' obj.pk %}">Delete</a> |#}
+    {#                    <a href="{% url 'task_detail' obj.pk %}">Task detail</a>#}
+    {##}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <br/>#}
+    {##}
+    {#{% endfor %}#}
+    {#    <h2> Expired Task</h2>#}
+    {#{% for obj in expired_task %}#}
+    {#<div class="card">#}
+    {#            <div class="card-header">#}
+    {#                <span class="font-weight-bold">{{ obj.title|title }}</span>#}
+    {#            </div>#}
+    {#            <div class="card-footer text-center text-muted">#}
+    {#                    <a href="{% url 'task_edit' obj.pk %}">Edit</a> |#}
+    {#                <a href="{% url 'task_delete' obj.pk %}">Delete</a> |#}
+    {#                    <a href="{% url 'task_detail' obj.pk %}">Task detail</a>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <br/>#}
+    {#{% endfor %}#}
+{% endblock content %}

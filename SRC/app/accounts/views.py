@@ -3,6 +3,8 @@ from django.shortcuts import render
 # Create your views here.
 
 from allauth.account.views import SignupView
+from django.views import View
+
 from .forms import StaffSignupForm, CustomerSignupForm
 
 
@@ -45,3 +47,8 @@ class StaffSignUp(SignupView):
         ret.update(self.kwargs)
         return ret
 
+
+class StaffView(View):
+
+    def get(self, request):
+        return render(request, 'book/staff.html')

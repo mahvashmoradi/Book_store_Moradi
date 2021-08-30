@@ -35,7 +35,7 @@
           {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a href="#" class="nav-link waves-effect">
-              <span class="badge red z-depth-1 mr-1"> {{ request.user }} </span>
+              <span class="badge red z-depth-1 mr-1"><a href="{% url 'accounts:complete-info' %}">{{ request.user }}</a>  </span>
             </a>
           </li>
           <li class="nav-item">

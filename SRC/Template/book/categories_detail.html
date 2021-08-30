@@ -1,0 +1,56 @@
+{% extends 'pages/base.html' %}
+    {% block title %}
+      Category item
+
+    {% endblock title %}
+{% block content %}
+    <div class="container">
+        <h2>کتاب ها </h2>
+        <table class="table table-danger table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">کتاب</th>
+                <th scope="col">ویرایش</th>
+                <th scope="col">پاک کردن</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for obj in object %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ obj.name|title }}</td>
+                    <td><a href="{% url 'book:book_edit' obj.pk %}">ویرایش</a></td>
+                    <td><a href="{% url 'book:book_delete' obj.pk %}">حذف</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <p>برگشت به <a href="{% url 'book:categories_list' %}">دسته بندی ها</a></p>
+    </div>
+    {#{% for obj in object %}#}
+    {#<div class="card">#}
+    {#            <div class="card-header">#}
+    {#                <span class="font-weight-bold">{{ obj }}</span>#}
+    {#                <span class="text-muted">by {{ obj.author }} |#}
+    {#                    {{ obj.date }}</span>#}
+    {#            </div>#}
+    {#            <div class="card-body">#}
+    {#                {{ obj.description }}#}
+    {#            </div>#}
+    {#            <div class="card-footer text-center text-muted">#}
+    {#                <a href="#">Edit</a> | <a href="#">Delete</a>#}
+    {#            </div>#}
+    {#            <div class="card-footer text-center text-muted">#}
+    {#                <a href="{% url 'article_edit' article.pk %}">Edit</a> |#}
+    {#                <a href="{% url 'article_delete' article.pk %}">Delete</a>#}
+    {##}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <br/>#}
+    {#{% empty %}#}
+    {#    <li>No Task in this Category.</li>#}
+    {#{% endfor %}#}
+    {#    <p>Back to <a href="{% url 'categories_list' %}">Categories</a></p>#}
+
+{% endblock content %}

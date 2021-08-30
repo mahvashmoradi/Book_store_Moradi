@@ -1,0 +1,28 @@
+{% extends 'pages/base.html' %}
+{% load crispy_forms_tags %}
+    {% block title %}
+        Add Book
+
+    {% endblock title %}
+{% block content %}
+        <div class="container">
+
+    <div class="row">
+    <div class="col-9">
+<form method="post" action="#">
+            {% csrf_token %}
+        {{ form | crispy }}
+{#     {% crispy form %}#}
+        <br>
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">اضافه کردن</button>
+            </div >
+{#            <div class="col delete_input"><button type="button" class="btn btn-danger">پاک کردن متن ورودی</button></div>#}
+        </div>
+    </form>
+    </div>
+    </div>
+        </div>
+{% endblock content%}

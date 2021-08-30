@@ -1,0 +1,26 @@
+{% extends 'pages/base.html' %}
+    {% block title %}
+      Staff
+
+    {% endblock title %}
+{% block content %}
+        <div class="container">
+
+    <br>
+    <br>
+
+    <div class="row">
+    <div class="col-6" >
+        <h1>فهرست</h1>
+        <div class="list-group">
+  <a href="admin/" class="list-group-item list-group-item-action list-group-item-primary">admin</a>
+  <a href="{% url 'book:categories_list' %}" class="list-group-item list-group-item-action list-group-item-success">دسته بندی ها</a>
+  <a href="{% url 'book:book_list' %}" class="list-group-item list-group-item-action list-group-item-danger">کتاب ها</a>
+  <a href="{% url 'book:add_book' %}" class="list-group-item list-group-item-action list-group-item-warning">+افزودن کتاب</a>
+  <a href="{% url 'book:add_category' %}" class="list-group-item list-group-item-action list-group-item-success">+افزودن دسته بندی</a>
+
+</div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
