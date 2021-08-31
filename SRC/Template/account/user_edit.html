@@ -1,0 +1,12 @@
+{% extends 'pages/base.html' %}
+    {% block title %}
+    USer Update
+
+    {% endblock title %}
+{% block content %}
+<h1>ویرایش</h1>
+<form action="" method="post">{% csrf_token %}
+{{ form.as_p }}
+<button class="btn btn-info ml-2" type="submit">به روز کن</button>
+</form>
+{% endblock content %}

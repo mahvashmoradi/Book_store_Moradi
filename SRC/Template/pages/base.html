@@ -93,7 +93,7 @@
 <br>
 <br>
 
-<body dir="rtl">
+<body dir="rtl" style="text-align: right">
 
 <div class="mt-5 pt-4">
     {% if messages %}
@@ -125,9 +125,10 @@
 {#سبد خرید شما:#}
 {#                   </a>#}
 {#</div>#}
+<div class="container">
 {% block content %}
 {% endblock content %}
-
+</div>
 {% block extra_body %}
 {% endblock %}
 

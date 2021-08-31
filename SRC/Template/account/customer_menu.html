@@ -5,15 +5,16 @@
 {% endblock title %}
 {% block content %}
     <div class="container">
-        <button class="btn btn-primary" id="edit_button" type="button">ذخیره کردن</button>
-
+{#        <button class="btn btn-primary" id="edit_button" type="button"></button>#}
+        <a href="{% url 'accounts:edit-user' user_info.pk %}" class="btn btn-primary">ویرایش</a>
         <h2>اطلاعات فردی</h2>
+        <br>
         <div class="row">
             {#            <div class="col-6">#}
             {#                <label for="name"> نام کاربری</label>#}
             {#                <input type="text" id="username"  readonly value="name">#}
             {#            </div>#}
-            <div class="col-6">
+            <div class="col">
                 <span>نام کاربری</span>
                 <span>{{ user }}</span>
             </div>
@@ -21,17 +22,21 @@
         <div class="row">
             <div class="col-6">
                 <label for="first_name">نام</label>
-                <input type="text" id="first_name" value={{ user_info.first_name }}>
+              <span>{{ user_info.first_name }}</span>
             </div>
             <div class="col-6">
                 <label for="last_name">نام خانوادگی</label>
-                <input type="text" id="last_name" value={{ user_info.last_name }}>
+            <span> {{ user_info.last_name }}</span>
             </div>
         </div>
         <div class="row">
             <div class="col-6">
                 <label for="gender">جنسیت</label>
-                <input type="text" id="gender" value={{ user_info.gender }}>
+             <span>{{ user_info.gender }}</span>
+            </div>
+            <div class="col-6">
+                <label for="gender">آدرس منتخب</label>
+             <span>{{ user_info.gender }}</span>
             </div>
         </div>
 
@@ -42,10 +47,40 @@
             </h3>
             <div class="card-body">
                 <div id="table" class="table-editable">
-      <span class="table-add float-right mb-3 mr-2"
-      ><a href="#!" class="text-success"
-      ><i class="fas fa-plus fa-2x" aria-hidden="true"></i></a
-      ></span>
+{#      <span class="table-add float-right mb-3 mr-2">#}
+{#          <a href="#!" class="text-success">#}
+{#              <i class="fas fa-plus fa-2x" aria-hidden="true"></i></a></span>#}
+
+                <!-- Button trigger modal -->
+<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+   <i class="fas fa-plus fa-2x" aria-hidden="true"></i>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">افزودن آدرس</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+              <form method="POST" action="{% url 'accounts:complete-info' %}">
+                        {% csrf_token %}
+          {{ form }}
+        <button type="submit" class="btn btn-primary">افزودن</button>
+         </form>
+      </div>
+      <div class="modal-footer">
+
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
                     <table class="table table-bordered table-responsive-md table-striped text-center">
                         <thead>
                         <tr>
@@ -56,7 +91,7 @@
                             <th scope="col">کد پستی</th>
                             <th scope="col">تلفن</th>
                             <th scope="col">حذف</th>
-                            <th scope="col">آدرس منتخب</th>
+                            <th scope="col">ویرایش</th>
 
                             {#            <th class="text-center">Person Name</th>#}
                             {#            <th class="text-center">Age</th>#}
@@ -73,16 +108,11 @@
 
                             <tr>
                             <td class="pt-3-half">{{ forloop.counter }}</td>
-                            <td class="pt-3-half"><input type="text" id="province{{ forloop.counter }}"
-                                                         value={{ obj.province }}></td>
-                            <td class="pt-3-half"><input type="text" id="city{{ forloop.counter }}"
-                                                         value={{ obj.city }}></td>
-                            <td class="pt-3-half"><input type="text" id="address{{ forloop.counter }}"
-                                                         value={{ obj.address }}></td>
-                            <td class="pt-3-half"><input type="text" id="postal{{ forloop.counter }}"
-                                                         value={{ obj.postal_code }}></td>
-                            <td class="pt-3-half"><input type="text" id="phone{{ forloop.counter }}"
-                                                         value={{ obj.phone_number }}></td>
+                            <td class="pt-3-half">{{ obj.province }}</td>
+                            <td class="pt-3-half">{{ obj.city }}</td>
+                            <td class="pt-3-half">{{ obj.address }}</td>
+                            <td class="pt-3-half">{{ obj.postal_code }}</td>
+                            <td class="pt-3-half">{{ obj.phone_number }}</td>
 
                             {#            <td class="pt-3-half">#}
                             {#              <span class="table-up"#}
@@ -95,13 +125,19 @@
                             {#              ></span>#}
                             {#            </td>#}
                             <td>
-              <span class="table-remove"
-              ><button type="button" class="btn btn-danger btn-rounded btn-sm my-0">
-                  پاک کردن
-                </button></span
-              >
+              <span class="table-remove">
+{#                  <button type="button" class="btn btn-danger btn-rounded btn-sm my-0">#}
+{#                  پاک کردن#}
+{#                </button>#}
+                  <a href="{% url 'accounts:delete-address' obj.pk %}" class="btn btn-danger ">حذف</a>
+              </span>
                             </td>
-                            <td class="pt-3-half"></td>
+                            <td>
+              <span class="table-remove">
+                  <a href="{% url 'accounts:edit-address' obj.pk %}" class="btn btn-danger ">ویرایش</a>
+              </span>
+
+                            </td>
 
                         {% endfor %}
 
@@ -187,7 +223,9 @@
             </div>
         </div>
         <!-- Editable table -->
-
+        <br>
+        <br>
+        <br>
         <h2>تاریخچه سفارشات</h2>
 
         {% for obj in history %}
@@ -315,84 +353,3 @@
 
 {% endblock content %}
 
-{% block script %}
-    $(document).ready(function () {
-    console.log('input_text')
-
-    const tableID = $('#table');
-    var count = tableID.find('tbody tr').length + 1
-    const newTr = `
-    <tr class="hide">
-        <td class="pt-3-half"> {{ count }}</td>
-        <td class="pt-3-half"><input type="text" id="province{{ count }}"></td>
-        <td class="pt-3-half"><input type="text" id="city{{ count }}"></td>
-        <td class="pt-3-half"><input type="text" id="address{{ count }}"></td>
-        <td class="pt-3-half"><input type="text" id="postal{{ count }}"></td>
-        <td class="pt-3-half"><input type="text" id="phone{{ count }}"></td>
-
-        <td>
-    <span class="table-remove"
-    ><button
-            type="button"
-            class="btn btn-danger btn-rounded btn-sm my-0 waves-effect waves-light"
-    >
-        پاک کردن
-      </button></span
-    >
-        </td>
-        <td class="pt-3-half"></td>
-
-    </tr>
-    `;
-
-    console.log(count)
-    $('.table-add').on('click', 'i', () => {
-    $('tbody').append(newTr);
-    });
-    tableID.on('click', '.table-remove', function () {
-    $(this).parents('tr').detach();
-    });
-    // $EXPORT.text(JSON.stringify(data));
-    //     name: $("#name").val(),
-    const data = [];
-
-
-    $("#edit_button").click(function () {
-    for (let i = 1; i < count; i++) {
-
-    info_address = {
-    province: $("#province" + i).val(),
-    city: $("#city" + i).val(),
-    address: $("#address" + i).val(),
-    postal: $("#postal" + i).val(),
-    phone: $("#phone" + i).val()
-    }
-    //  text += cars[i] + "<br>";
-    console.log(info_address)
-    data.push(info_address)
-    }
-
-    console.log(data)
-    send_data = {
-    first_name: $("#first_name").val(),
-    last_name: $("#last_name").val(),
-    gender: $("#gender").val(),
-    inf_address: data
-    }
-    console.log(send_data)
-
-    $.ajax({
-    url: "{% url 'accounts:complete-api-info' %}",
-    type: "PUT",
-   // headers: {'X-CSRFToken': csrftoken},
-    data: JSON.stringify(send_data),
-    //  data: { "data":JSON.stringify(send_data), "username": "customer@gmail.com","password": "';lkjhgfdsa"},
-
-    processData: false,
-    contentType: "application/json; charset=UTF-8",
-    });
-
-    });
-    });
-
-{% endblock script %}

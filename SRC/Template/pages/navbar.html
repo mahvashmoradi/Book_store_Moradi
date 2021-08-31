@@ -33,11 +33,37 @@
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
           {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a href="#" class="nav-link waves-effect">
-              <span class="badge red z-depth-1 mr-1"><a href="{% url 'accounts:complete-info' %}">{{ request.user }}</a>  </span>
-            </a>
-          </li>
+{#                        <li class="nav-item">#}
+{#            <a href="#" class="nav-link waves-effect">#}
+{#              <span class="badge red z-depth-1 mr-1"><a href="{% url 'accounts:staff_menu' %}">{{ request.user }}</a>  </span>#}
+{#            </a>#}
+{#          </li>#}
+{#              {% else %}#}
+{#          <li class="nav-item">#}
+{#            <a href="#" class="nav-link waves-effect">#}
+{#              <span class="badge red z-depth-1 mr-1"><a href="{% url 'accounts:complete-info' %}">{{ request.user }}</a>  </span>#}
+{#            </a>#}
+{#          </li>#}
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                     data-bs-toggle="dropdown" aria-expanded="false">
+                      {{ request.user }}
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                {% if request.user.is_staff %}
+                      <li><a class="dropdown-item" href="{% url 'accounts:staff_menu' %}">پروفایل</a></li>
+                                               {% else %}
+
+                      <li><a class="dropdown-item" href="{% url 'accounts:complete-info' %}">پروفایل</a></li>
+                                                  {% endif %}
+
+                      <li><a class="dropdown-item" href="{% url 'account_change_password' %}">تغییر پسورد</a></li>
+                      <li>
+                          <hr class="dropdown-divider">
+                      </li>
+                      <li><a class="dropdown-item" href="{% url 'account_logout' %}">خروج</a></li>
+                  </ul>
+              </li>
           <li class="nav-item">
             <a class="nav-link waves-effect" href="{% url 'app.payment:cart' %}">
               <span class="clearfix d-none d-sm-inline-block">
@@ -46,21 +72,21 @@
  </span>
             </a>
           </li>
-              <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'account_logout' %}">
-              <span class="clearfix d-none d-sm-inline-block"> خروج </span>
-            </a>
-          </li>
-              <li class="nav-item">
+{#              <li class="nav-item">#}
+{#            <a class="nav-link waves-effect" href="{% url 'account_logout' %}">#}
+{#              <span class="clearfix d-none d-sm-inline-block"> خروج </span>#}
+{#            </a>#}
+{#          </li>#}
+{#              <li class="nav-item">#}
 {#            <a class="nav-link waves-effect" href="{% url 'password_change' %}">#}
-              <span class="clearfix d-none d-sm-inline-block"> تغییر پسورد </span>
-            </a>
-          </li>
-              <li class="nav-item">
-            <a class="nav-link waves-effect" href="./admin">
-              <span class="clearfix d-none d-sm-inline-block"> ادمین </span>
-            </a>
-          </li>
+{#              <span class="clearfix d-none d-sm-inline-block"> تغییر پسورد </span>#}
+{#            </a>#}
+{#          </li>#}
+{#              <li class="nav-item">#}
+{#            <a class="nav-link waves-effect" href="./admin">#}
+{#              <span class="clearfix d-none d-sm-inline-block"> ادمین </span>#}
+{#            </a>#}
+{#          </li>#}
           {% else %}
           <li class="nav-item">
             <a class="nav-link waves-effect" href="{% url 'account_login' %}">
@@ -79,11 +105,11 @@
               <span class="clearfix d-none d-sm-inline-block"> سبد خرید </span>
             </a>
           </li>
-                           <li class="nav-item">
-            <a class="nav-link waves-effect" href="./admin">
-              <span class="clearfix d-none d-sm-inline-block"> ادمین </span>
-            </a>
-          </li>
+{#                           <li class="nav-item">#}
+{#            <a class="nav-link waves-effect" href="./admin">#}
+{#              <span class="clearfix d-none d-sm-inline-block"> ادمین </span>#}
+{#            </a>#}
+{#          </li>#}
           {% endif %}
         </ul>
       </div>

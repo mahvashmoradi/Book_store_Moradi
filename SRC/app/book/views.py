@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
@@ -65,8 +66,8 @@ class CategoriesView(ListView):
         # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
         # Add in a QuerySet of empty category and full category
-        context['empty_categories'] = CategoryModel.categories_manager.empty()
-        context['full_categories'] = CategoryModel.categories_manager.full()
+        context['empty_categories'] = CategoryModel.objects.annotate(c=Count('categories_item')).filter(c=0)
+        context['full_categories'] = CategoryModel.objects.annotate(c=Count('categories_item')).filter(c__gt=0)
         return context
 
 

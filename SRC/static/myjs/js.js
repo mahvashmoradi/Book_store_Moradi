@@ -227,3 +227,105 @@ $.ajax({
     contentType: "application/json; charset=UTF-8",
     complete: callback
 });
+////////////////////////////////////////
+
+
+    $(document).ready(function () {
+    console.log('input_text')
+
+    const tableID = $('#table');
+    var count = tableID.find('tbody tr').length + 1
+    const newTr = `
+    <tr class="hide">
+        <td class="pt-3-half"> {{ count }}</td>
+        <td class="pt-3-half"><input type="text" id="province{{ count }}"></td>
+        <td class="pt-3-half"><input type="text" id="city{{ count }}"></td>
+        <td class="pt-3-half"><input type="text" id="address{{ count }}"></td>
+        <td class="pt-3-half"><input type="text" id="postal{{ count }}"></td>
+        <td class="pt-3-half"><input type="text" id="phone{{ count }}"></td>
+
+        <td>
+    <span class="table-remove"
+    ><button
+            type="button"
+            class="btn btn-danger btn-rounded btn-sm my-0 waves-effect waves-light"
+    >
+        پاک کردن
+      </button></span
+    >
+        </td>
+        <td class="pt-3-half"></td>
+
+    </tr>
+    `;
+
+    console.log(count)
+    $('.table-add').on('click', 'i', () => {
+    $('tbody').append(newTr);
+    });
+    tableID.on('click', '.table-remove', function () {
+    $(this).parents('tr').detach();
+    });
+    // $EXPORT.text(JSON.stringify(data));
+    //     name: $("#name").val(),
+    const data = [];
+
+
+    $("#edit_button").click(function () {
+    for (let i = 1; i < count; i++) {
+
+    info_address = {
+    province: $("#province" + i).val(),
+    city: $("#city" + i).val(),
+    address: $("#address" + i).val(),
+    postal: $("#postal" + i).val(),
+    phone: $("#phone" + i).val()
+    }
+    //  text += cars[i] + "<br>";
+    console.log(info_address)
+    data.push(info_address)
+    }
+
+    console.log(data)
+    send_data = {
+    first_name: $("#first_name").val(),
+    last_name: $("#last_name").val(),
+    gender: $("#gender").val(),
+    inf_address: data
+    }
+    console.log(send_data)
+
+       $.post( "./",
+    {
+    csrfmiddlewaretoken: '{{ csrf_token }}',
+    "inputText": send_data,  // دیتا در فرم وارد شده
+
+    } ,function( data ) {
+    //   console.log('data : ',data)
+    //  iziToast.show({
+    //       title: 'Hey',
+    //      color : 'green',
+    //       message: data.message
+    //   });
+    $('#books_ul li').remove()
+   if (data.books.length > 0){
+    $.each(data.books,function(index,value){
+    console.log('index',index)
+    console.log('value',value)
+
+  $('#books_ul').append(' <li class="list-group"><a href="/product/'+value.id+'">'+value.name+'</a></li>')
+        })}
+        else{
+        $('#books_ul').append('<li class="list-group">محصولی یافت نشد</li>')
+   };
+
+
+    }
+
+    );
+     task= document.getElementById('search');
+    task.value=null;
+    });
+
+
+    });

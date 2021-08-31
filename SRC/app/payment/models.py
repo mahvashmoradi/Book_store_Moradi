@@ -59,6 +59,9 @@ class Invoice(models.Model):
     check_discount = models.ForeignKey(Coupons, blank=True, null=True, on_delete=models.DO_NOTHING,
                                        related_name='coupons_code',)
 
+    def invoice_item(self):
+        return self.Items.all()
+
     @property
     def get_cart_total(self):
         order_items = self.Items.all()

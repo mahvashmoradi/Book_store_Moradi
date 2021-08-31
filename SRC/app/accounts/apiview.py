@@ -1,4 +1,5 @@
 import requests
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, UpdateAPIView, RetrieveUpdateAPIView, ListAPIView, \
@@ -6,6 +7,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, UpdateAPIView,
 
 from app.accounts.models import Customer, AddressModel
 from app.accounts.serializer import CustomerSerializer, CustomUserSerializer, AddressSerializer
+from app.payment.models import Invoice, InvoiceLine
 
 
 class UserInfo(RetrieveUpdateAPIView):
@@ -57,4 +59,11 @@ def customer_info_view(request):
     customer = request.user.customer
     user_info = Customer.objects.get(user__email=customer)
     address_info = AddressModel.objects.filter(customer__user__email=customer)
-    return render(request, 'account/customer_profile.html', {'user_info': user_info, 'address': address_info})
+    order = Invoice.objects.filter(customer=customer)
+    # for each in order:
+    #     if each.Items.exists():
+    #         order_detail = InvoiceLine.objects.filter(invoice=each)
+    #         history = {each: order_detail}
+    return render(request, 'account/customer_profile.html', {'user_info': user_info,
+                                                             'address': address_info,
+                                                             'history': order})
