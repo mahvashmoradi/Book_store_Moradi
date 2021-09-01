@@ -11,9 +11,11 @@ from app.book.manager import CategoriesManager
 class CategoryModel(models.Model):
     # name of Category
     name = models.CharField('نام', max_length=50)
+
     class Meta:
         verbose_name = 'دسته بندی'
         verbose_name_plural = 'دسته بندی ها'
+        # app_label = 'book'
 
     def __str__(self):
         return self.name
@@ -42,6 +44,7 @@ class BookModel(models.Model):
     categories = models.ManyToManyField(CategoryModel, blank=False, related_name='category', verbose_name='گروه')
     inventory = models.IntegerField('موجودی')
     image = models.ImageField(upload_to='book/', null=True, blank=True)
+    description = models.TextField('توضیحات', blank=True, null=True)
 
     class Meta:
         verbose_name = 'کتاب'
@@ -71,10 +74,13 @@ class BookModel(models.Model):
     def get_category_display(self):
         return self.categories.values('name')
 
+    # def find_author(self):
+    #     return self.
+
     def add_cart(self):
         return reverse('payment:add_to_cart',
                        # pk= str(self.id) )
-        kwargs={'pk': self.id})
+                       kwargs={'pk': self.id})
 
     def __str__(self):
         return self.name

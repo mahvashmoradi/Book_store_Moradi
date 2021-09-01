@@ -22,7 +22,6 @@
         <!--Grid column-->
 
         <!--Grid column-->
-        <div class="col-md-6 mb-4">
 
           <!--Content-->
           <div class="p-4">
@@ -55,6 +54,9 @@
             <p class="lead font-weight-bold">توضیحات</p>
 
             <p>{{ object.description }}</p>
+         </div>
+         </div>
+         </div>
     <br>
     <br>
     <br>
@@ -65,6 +67,7 @@
     <a href="{% url 'book:book_edit' object.pk %}">ویرایش</a> |
     <a href="{% url 'book:book_delete' object.pk %}">پاک کردن</a>
     <p>برگشت به <a href="{% url 'book:book_list' %}">لیست کتاب ها</a></p>
+  </main>
 {#    <a href="#">ویرایش</a> |#}
 {#    <a href="#">پاک کردن</a>#}
 {#    <p>برگشت به <a href="#">لیست کتاب ها</a></p>#}

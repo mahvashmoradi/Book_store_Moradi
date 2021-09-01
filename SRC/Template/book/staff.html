@@ -13,11 +13,17 @@
     <div class="col-6" >
         <h1>فهرست</h1>
         <div class="list-group">
-  <a href="admin/" class="list-group-item list-group-item-action list-group-item-primary">admin</a>
+{#  <a href="admin/" class="list-group-item list-group-item-action list-group-item-primary">admin</a>#}
   <a href="{% url 'book:categories_list' %}" class="list-group-item list-group-item-action list-group-item-success">دسته بندی ها</a>
   <a href="{% url 'book:book_list' %}" class="list-group-item list-group-item-action list-group-item-danger">کتاب ها</a>
   <a href="{% url 'book:add_book' %}" class="list-group-item list-group-item-action list-group-item-warning">+افزودن کتاب</a>
   <a href="{% url 'book:add_category' %}" class="list-group-item list-group-item-action list-group-item-success">+افزودن دسته بندی</a>
+  <a href="{% url 'payment:discount_list' %}" class="list-group-item list-group-item-action list-group-item-success">تخفیف محصولات</a>
+  <a href="{% url 'payment:add_discount' %}" class="list-group-item list-group-item-action list-group-item-danger">+افزودن تخفیف محصولات</a>
+  <a href="{% url 'payment:coupons_list' %}" class="list-group-item list-group-item-action list-group-item-warning">لیست کد تخفیف ها</a>
+  <a href="{% url 'payment:add_coupons' %}" class="list-group-item list-group-item-action list-group-item-success">+افزودن کد تخفیف</a>
+  <a href="{% url 'book:author_list' %}" class="list-group-item list-group-item-action list-group-item-success">نویسندگان</a>
+  <a href="{% url 'book:add_author' %}" class="list-group-item list-group-item-action list-group-item-danger">+افزودن نویسنده</a>
 
 </div>
         </div>

@@ -1,7 +1,6 @@
 from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 from app.payment.models import Discount
-from .models import BookModel
 
 
 # """اگر از جدول تخفیف ها کتابی حذف شد، قیمت تخفیفی آن صفر می شود"""

@@ -1,37 +1,33 @@
 {% extends 'pages/base.html' %}
     {% block title %}
-        Books
+        Discount
     {% endblock title %}
 {% block content %}
     <div class="container" dir="rtl">
-    <h2>لیست کتاب ها</h2>
+    <h2>لیست تخفیف کتاب ها</h2>
 
     <table class="table table-info table-striped">
         <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">کتاب</th>
-            <th scope="col">نویسنده</th>
-            <th scope="col">قیمت</th>
-            <th scope="col">تعداد</th>
-            <th scope="col">قیمت با تخفیف</th>
+            <th scope="col">نوع تخفیف</th>
+            <th scope="col">مقدار</th>
+            <th scope="col">درصد</th>
             <th scope="col">ویرایش</th>
             <th scope="col">پاک کردن</th>
-            <th scope="col">جزییات</th>
         </tr>
         </thead>
         <tbody>
         {% for obj in object_list %}
             <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ obj.name|title }}</td>
-                <td>{{ obj.author.name }}</td>
-                <td>{{ obj.price }}</td>
-                <td>{{ obj.inventory }}</td>
-                <td>{{ obj.discount_price }}</td>
-                <td><a href="{% url 'book:book_edit' obj.pk %}">ویرایش</a></td>
-                <td><a href="{% url 'book:book_delete' obj.pk %}">پاک کردن</a></td>
-                <td><a href="{% url 'book:book_detail' obj.pk %}">جزییات</a></td>
+                <td>{{ obj.book }}</td>
+                <td>{{ obj.choice_discount }}</td>
+                <td>{{ obj.value }}</td>
+                <td>{{ obj.percent }}</td>
+                <td><a href="{% url 'payment:discount_edit' obj.pk %}">ویرایش</a></td>
+                <td><a href="{% url 'payment:discount_delete' obj.pk %}">پاک کردن</a></td>
             </tr>
         {% endfor %}
         </tbody>

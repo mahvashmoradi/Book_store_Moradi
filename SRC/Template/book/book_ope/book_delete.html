@@ -6,7 +6,7 @@
 {% block content %}
 <h1>حذف</h1>
 <form action="" method="post">{% csrf_token %}
-<p>از حذف کتاب {{ task.title }} مطمئن هستید؟ </p>
+<p>از حذف کتاب {{ object.title }} مطمئن هستید؟ </p>
 <button class="btn btn-danger ml-2" type="submit">بله</button>
 </form>
 {% endblock content %}

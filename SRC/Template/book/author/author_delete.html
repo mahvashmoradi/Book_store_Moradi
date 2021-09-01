@@ -1,0 +1,12 @@
+{% extends 'pages/base.html' %}
+    {% block title %}
+       Author delete
+
+    {% endblock title %}
+{% block content %}
+<h1>حذف</h1>
+<form action="" method="post">{% csrf_token %}
+<p>از حذف نویسنده {{ object.name }} مطمئن هستید؟</p>
+<button class="btn btn-danger ml-2" type="submit">بله</button>
+</form>
+{% endblock content %}

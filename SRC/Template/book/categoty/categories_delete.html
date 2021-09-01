@@ -4,9 +4,9 @@
 
     {% endblock title %}
 {% block content %}
-<h1>Delete</h1>
+<h1>حذف</h1>
 <form action="" method="post">{% csrf_token %}
-<p>Are you sure you want to delete "{{ object }}"?</p>
-<button class="btn btn-danger ml-2" type="submit">Confirm</button>
+<p>از حذف دسته بندی {{ object }} مطمئن هستید؟</p>
+<button class="btn btn-danger ml-2" type="submit">بله</button>
 </form>
 {% endblock content %}

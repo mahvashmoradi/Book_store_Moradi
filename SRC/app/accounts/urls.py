@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import *
-from .apiview import UserInfo, AddressInfo
+from .apiview import UserInfo, AddressInfo, customer_info_view
 
 app_name = 'app.accounts'
 
@@ -13,7 +13,7 @@ urlpatterns = [
     path('complete-info/', CustomerInfoView.as_view(), name='complete-info'),
     path('address-delete/<int:id>/', delete_address, name='delete-address'),
     path('address-edit/<int:id>/', EditAddress.as_view(), name='edit-address'),
-    # path('complete-info/', customer_info_view, name='complete-info'),
+    path('complete-view-api-info/', customer_info_view, name='complete-view-api-info'),
     path('edit-user/<int:pk>/', CustomerUpdateView.as_view(), name='edit-user'),
 
 

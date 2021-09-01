@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -28,6 +29,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 AUTH_USER_MODEL = 'accounts.CustomUser'
+# DJANGO_SETTINGS_MODULE = SRC.settings
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -74,7 +76,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -162,3 +163,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CART_SESSION_ID = 'cart'
+
+# TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+# NOSE_ARGS = [
+#     '--exclude-path=../*/admin',
+#     '--exclude-path=../*/models',
+# ]

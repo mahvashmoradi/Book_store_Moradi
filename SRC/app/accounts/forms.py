@@ -17,6 +17,7 @@
 from allauth.account.forms import SignupForm
 from django import forms
 from django.http import request
+from django.contrib.auth.models import Group
 
 from app.accounts.models import Customer, AddressModel
 
@@ -41,6 +42,11 @@ class StaffSignupForm(SignupForm):
         # .save() returns a User object.
         user = super(StaffSignupForm, self).save(request)
         user.is_staff = True
+        user.save()
+        group = Group.objects.get(name='staff_group')
+        # group.user_set.add(customer)
+        # group.save()
+        user.groups.add(group)
         user.save()
         # Add your own processing here.
         # You must return the original result.

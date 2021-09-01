@@ -1,9 +1,10 @@
 from django.contrib import admin
 from .models import BookModel, CategoryModel, Author
 
+
 # admin.site.register(BookModel)
 # admin.site.register(CategoryModel)
-admin.site.register(Author)
+# admin.site.register(Author)
 
 
 # list_display= ('get_title',...)
@@ -21,8 +22,14 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(BookModel)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['name','price','discount_price','created','inventory','image' ]
+    list_display = ['name', 'price', 'discount_price', 'created', 'inventory', 'image']
     list_filter = ['categories']
     list_editable = ['price']
     # prepopulated_fields = {'slug': ('name',)}
 
+
+@admin.register(Author)
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    # list_filter = ['categories']
+    # list_editable = ['name']

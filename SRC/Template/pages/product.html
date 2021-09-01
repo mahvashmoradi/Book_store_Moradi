@@ -49,9 +49,10 @@
               {% endif %}
             </p>
 
-            <p class="lead font-weight-bold">Description</p>
+            <p class="lead font-weight-bold">توضیحات</p>
 
-            <p>{{ object.description }}</p>
+            {% if object.description %}<p>{{ object.description }}</p>{% else %}
+          <p>توضیحات ندارد</p>{% endif %}
 
             {% comment %} <form class="d-flex justify-content-left">
               <!-- Default input -->
@@ -63,10 +64,11 @@
 
             </form> {% endcomment %}
             <form method="post" action="{% url 'pages:product' object.id %}">
-                {{ form }}
                                             {% csrf_token %}
                                             <div class="row">
                                                 <div class="col">
+                                                                    {{ form }}
+
                                                     <button type="submit" class="btn btn-primary">اضافه به سبد خرید
                                                     </button>
                                                 </div>

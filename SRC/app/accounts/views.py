@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 # Create your views here.
-
+from app.accounts.Mixin import GroupRequiredMixin
 from allauth.account.views import SignupView
 from django.urls import reverse_lazy, reverse
 from django.views import View
@@ -52,20 +52,15 @@ class StaffSignUp(SignupView):
         return ret
 
 
-class StaffView(View):
+class StaffView(GroupRequiredMixin, View):
+    group_required = [u'staff_group', u'admin_group']
 
     def get(self, request):
         return render(request, 'book/staff.html')
 
 
 class CustomerInfoView(View):
-    # if request.method == 'POST' and request.is_ajax():
-    #     print(dict(request.POST.items()))  # محتویات درخواست مشاهده کنید
-    #     input_text = request.POST['inputText']
-    #     return JsonResponse({})
-    #     print('get',r)
-    # if r.status_code == 200:
-    #     return HttpResponse(r)
+
     def get(self, request):
         form = AddressForm
         customer = request.user.customer
@@ -95,22 +90,14 @@ class CustomerInfoView(View):
                                        postal_code=request.POST['postal_code'],
                                        phone_number=request.POST['phone_number'],
                                        )
-            # obj_address.save()
-            #
-            # obj_address.customer.add(customer)
-            # obj_address.save()
-            #
-            # obj_address.city.add(city)
-            # obj_address.save()
-            #
-            # obj_address.province.add(province)
             obj_address.save()
             return redirect('./')
 
 
 def delete_address(request, id):
     customer = Customer.objects.get(user=request.user)
-    if AddressModel.objects.filter(customer=customer).exists():
+    addr = AddressModel.objects.filter(customer=customer)
+    if len(addr) > 1:
         AddressModel.objects.filter(id=id).delete()
     else:
         messages.error(request, 'یک آدرس باید در حساب کاربری شما موجود باشد')

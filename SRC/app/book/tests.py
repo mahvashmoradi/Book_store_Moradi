@@ -1,8 +1,9 @@
 from django.test import TestCase
-from .models import BookModel, Author
 
 
 # Create your tests here.
+from app.book.models import *
+
 
 class BookTest(TestCase):
     def setUp(self):

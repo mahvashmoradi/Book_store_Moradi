@@ -16,8 +16,8 @@ class Coupons(models.Model):
     started = models.DateTimeField('زمان شروع', )
     finished = models.DateTimeField('زمان پایان', )
     code = models.CharField('کد تخفیف', blank=False, max_length=10)
-    value = models.PositiveBigIntegerField('مقدار تخفیف', blank=True, null=True)
-    percent = models.FloatField('درصد تخفیف', blank=True, null=True)
+    value = models.PositiveBigIntegerField('مقدار تخفیف', default=0,blank=True, null=True)
+    percent = models.FloatField('درصد تخفیف', default=0,blank=True, null=True)
     choice_discount = models.CharField('نوع تخفیف', choices=DISCOUNT_CHOICES, max_length=1, default=VALUE)
 
     class Meta:
