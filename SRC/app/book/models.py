@@ -17,6 +17,9 @@ class CategoryModel(models.Model):
         verbose_name_plural = 'دسته بندی ها'
         # app_label = 'book'
 
+    def get_items(self):
+        return ",".join([str(p) for p in self.category.all()])
+
     def __str__(self):
         return self.name
 
