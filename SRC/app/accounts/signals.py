@@ -5,10 +5,12 @@ from .models import CustomUser, Customer
 from django.contrib.auth.models import Group
 
 
-# python manage.py sqlsequencereset auth
-
 @receiver(post_save, sender=CustomUser)
 def my_handler(sender, instance, created, **kwargs):
+    """
+    وقتی کاربری ساخته شد،
+     مشتری با همین مشخصات ساخته می شود و به گروه customer_group اضافه می شود و دسترسی های این گروه را دارد
+    """
     if not instance.is_staff and created:
         try:
             customer = Customer.objects.create(user=instance)

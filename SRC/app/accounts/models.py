@@ -59,7 +59,7 @@ class AddressModel(models.Model):
         verbose_name_plural = 'آدرس کاربران'
 
     def __str__(self):
-        return str(self.customer)
+        return str(self.id)
 
 
 # City model

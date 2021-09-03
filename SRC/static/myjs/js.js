@@ -329,3 +329,63 @@ $.ajax({
 
 
     });
+///////////////////////////////////////////////////////
+
+
+
+
+    $(document).ready(function () {
+    const newTr = `
+    <div class="row">
+        <div class="col-2">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="" id="flexRadioDefault2"
+                   checked>
+        </div>
+        <div class="col-10">
+            <label class="form-check-label" for="flexRadioDefault2" id="label_select">
+            </label></div></div>
+        `;
+        $("#new_address").click(function(){
+
+        // ajax
+        $.post( "{% url 'payment:select-address' %}",
+        {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        province: $("#province").val(),
+        city: $("#city").val(),
+        address: $("#address").val(),
+        postal: $("#postal").val(),
+        phone: $("#phone").val()
+        } ,function( data ) {
+        // console.log('data : ',data)
+        // iziToast.show({
+        // title: 'Hey',
+        // color : 'green',
+        // message: data.message
+        // });
+
+        console.log(data.message)
+
+        $("#add_item").append(newTr)
+        $("#label_select").append(''+postal.value+', '+address.value+',,'+city.value+','+province.value+'')
+        $("#flexRadioDefault2").value =data.message
+
+        // $("#add_item").append('<input class="form-check-input" type="radio" name="flexRadioDefault"
+        //                                 value="data.message" id="flexRadioDefault2" checked>')
+
+        // $("#add_item").append('<label class="form-check-label" for="flexRadioDefault2">
+       // '+province.value+','+city.value+','+postal.value+', '+address.value+','+phone.value+',</label>')
+        // })}
+        // else{
+        // $('#books_ul').append('
+       // <li class="list-group">محصولی یافت نشد</li>
+       // ')
+        }
+
+        );
+        // task= document.getElementById('search');
+        // task.value=null;
+        });
+
+
+        });

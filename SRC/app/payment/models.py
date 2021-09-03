@@ -1,23 +1,20 @@
-from django.utils import timezone
-
 from django.db import models
-from app.accounts.models import CustomUser, Customer
-
-
-# from app.book.models import BookModel
-
-
+from app.accounts.models import CustomUser, Customer, AddressModel
 # Create your models here.
-# Coupons Code which decrease total price of factor
+
+
 class Coupons(models.Model):
+    """
+    جدول کد تخفیف ها که دارای زمان اعتبار است و می تواند درصدی یا مقداری باشد. روی کل سفارش اعمال می شود
+    """
     VALUE = 'V'
     PERCENT = 'P'
     DISCOUNT_CHOICES = [(VALUE, 'مقدار'), (PERCENT, 'درصدی')]
     started = models.DateTimeField('زمان شروع', )
     finished = models.DateTimeField('زمان پایان', )
     code = models.CharField('کد تخفیف', blank=False, max_length=10)
-    value = models.PositiveBigIntegerField('مقدار تخفیف', default=0,blank=True, null=True)
-    percent = models.FloatField('درصد تخفیف', default=0,blank=True, null=True)
+    value = models.PositiveBigIntegerField('مقدار تخفیف', default=0, blank=True, null=True)
+    percent = models.FloatField('درصد تخفیف', default=0, blank=True, null=True)
     choice_discount = models.CharField('نوع تخفیف', choices=DISCOUNT_CHOICES, max_length=1, default=VALUE)
 
     class Meta:
@@ -28,8 +25,10 @@ class Coupons(models.Model):
         return self.code
 
 
-# Discount on price of book with value and percent
 class Discount(models.Model):
+    """
+     محصولات تخفیف خورده و میزان تخفیف آن در این جدول است
+    """
     book = models.ForeignKey('book.BookModel', on_delete=models.CASCADE, related_name='dis_value',
                              verbose_name='نام کتاب')
     value = models.PositiveBigIntegerField('مقدارتخفیف', default=0)
@@ -44,8 +43,10 @@ class Discount(models.Model):
         return str(self.book)
 
 
-# Invoice(factor)
 class Invoice(models.Model):
+    """
+    فاکتورها
+    """
     ORDER = 'O'
     COMPLETE = 'C'
     INVOICE_CHOICES = [(ORDER, 'سفارش'), (COMPLETE, 'آماده ارسال')]
@@ -57,7 +58,9 @@ class Invoice(models.Model):
     total_with_discount = models.PositiveBigIntegerField('قابل پرداخت', blank=True, null=True)
     status = models.CharField(choices=INVOICE_CHOICES, max_length=1, default=ORDER, verbose_name='وضعیت سفارش')
     check_discount = models.ForeignKey(Coupons, blank=True, null=True, on_delete=models.DO_NOTHING,
-                                       related_name='coupons_code',)
+                                       related_name='coupons_code', )
+    address = models.ForeignKey(AddressModel, on_delete=models.DO_NOTHING, related_name='invoice_issued',
+                                verbose_name='آدرس', null=True)
 
     def invoice_item(self):
         return self.Items.all()
@@ -100,8 +103,10 @@ class Invoice(models.Model):
         return str(self.id)
 
 
-# Item in Invoice (factor detail)
 class InvoiceLine(models.Model):
+    """
+    جزییات فاکتور
+    """
     invoice = models.ForeignKey(Invoice, on_delete=models.PROTECT, related_name='Items', null=True,
                                 verbose_name='شماره فاکتور')
     items = models.ForeignKey('book.BookModel', on_delete=models.DO_NOTHING, null=True, verbose_name='محصول')

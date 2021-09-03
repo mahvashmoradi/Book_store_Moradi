@@ -16,14 +16,10 @@
 # ACCOUNT_SIGNUP_FORM_CLASS (=None)
 from allauth.account.forms import SignupForm
 from django import forms
-from django.http import request
 from django.contrib.auth.models import Group
-
-from app.accounts.models import Customer, AddressModel
 
 
 class CustomerSignupForm(SignupForm):
-
     def save(self, request):
         # Ensure you call the parent class's save.
         # .save() returns a User object.
@@ -56,6 +52,9 @@ class StaffSignupForm(SignupForm):
 # customer = Customer.objects.get(user=request.user)
 # choices = [(address.id, address.address) for address in AddressModel.objects.filter(customer=customer )]
 class AddressForm(forms.Form):
+    """
+    فرم آدرس
+    """
     # def __init__(self, *args, **kwargs):
     #     super(AddressForm, self).__init__(*args, **kwargs)
     #     for visible in self.visible_fields():
@@ -66,6 +65,7 @@ class AddressForm(forms.Form):
     postal_code = forms.CharField(label='کد پستی',max_length=10,widget=forms.TextInput(attrs={'class':'form-control'}))
     phone_number = forms.CharField(label='شماره تلفن', max_length=11,widget=forms.TextInput(attrs={'class':'form-control'}))
     # choices= forms.ChoiceField(label='آدرس منتخب',choices=choices)
+    #
     # def clean_title(self):
     #     super(TaskForm, self).clean()
     #     title = self.cleaned_data.get('title')

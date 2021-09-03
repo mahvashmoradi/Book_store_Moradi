@@ -2,6 +2,9 @@ from django import forms
 
 
 class BookForm(forms.Form):
+    """
+    فرم ایجاد یا ویرایش کتاب
+    """
     def __init__(self, *args, **kwargs):
         super(BookForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():

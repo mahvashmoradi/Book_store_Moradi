@@ -3,17 +3,21 @@ from django.dispatch import receiver
 from app.payment.models import Discount
 
 
-# """اگر از جدول تخفیف ها کتابی حذف شد، قیمت تخفیفی آن صفر می شود"""
 @receiver(pre_delete, sender=Discount)
 def delete_discount(sender, instance, **kwargs):
+    """
+    اگر از جدول تخفیف ها کتابی حذف شد، قیمت تخفیفی آن صفر می شود
+    """
     instance.book.discount_price = 0
     instance.book.save()
     instance.save()
 
 
-# """اگربه جدول تخفیف ها کتابی اضافه شد، قیمت تخفیفی آن محاسبه می شود"""
 @receiver(post_save, sender=Discount)
 def add_discount(sender, instance, created, **kwargs):
+    """
+    اگربه جدول تخفیف ها کتابی اضافه شد، قیمت تخفیفی آن محاسبه می شود
+    """
     if created:
         instance.book.cal_discount_price(instance=instance)
         instance.save()

@@ -1,6 +1,5 @@
 from django.db.models import Count
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import  get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
@@ -12,6 +11,9 @@ from ..payment.models import Discount, Coupons
 
 
 class BookView(GroupRequiredMixin, ListView):
+    """
+    لیست کتاب ها
+    """
     model = BookModel
     # queryset = Task.objects.all()
     template_name = 'book/book_ope/book_list.html'
@@ -19,6 +21,9 @@ class BookView(GroupRequiredMixin, ListView):
 
 
 class AuthorView(GroupRequiredMixin, ListView):
+    """
+    لیست نویسندگان
+    """
     model = Author
     # queryset = Task.objects.all()
     template_name = 'book/author/author_list.html'
@@ -26,6 +31,9 @@ class AuthorView(GroupRequiredMixin, ListView):
 
 
 class BookDetailView(GroupRequiredMixin, DetailView):
+    """
+    جزییات هر کتاب
+    """
     model = BookModel
     template_name = 'book/book_ope/book_detail.html'
     group_required = [u'staff_group', u'admin_group']
@@ -38,6 +46,9 @@ class BookDetailView(GroupRequiredMixin, DetailView):
 
 
 class BookEditView(GroupRequiredMixin, UpdateView):
+    """
+    ویرایش اطلاعات کتاب
+    """
     model = BookModel
     # fields = ('title', 'description',)
     fields = '__all__'
@@ -47,6 +58,9 @@ class BookEditView(GroupRequiredMixin, UpdateView):
 
 
 class AuthorUpdateView(GroupRequiredMixin, UpdateView):
+    """
+    ویرایش اطلاعات نویسنده
+    """
     model = Author
     # fields = ('title', 'description',)
     fields = '__all__'
@@ -55,14 +69,20 @@ class AuthorUpdateView(GroupRequiredMixin, UpdateView):
     group_required = [u'staff_group', u'admin_group']
 
 
-class BookDeleteView(GroupRequiredMixin, DeleteView):  # new
+class BookDeleteView(GroupRequiredMixin, DeleteView):
+    """
+    حذف کتاب
+    """
     model = BookModel
     template_name = 'book/book_ope/book_delete.html'
     success_url = reverse_lazy('book:book_list')
     group_required = [u'staff_group', u'admin_group']
 
 
-class AuthorDeleteView(GroupRequiredMixin,DeleteView):  # new
+class AuthorDeleteView(GroupRequiredMixin,DeleteView):
+    """
+    حذف نویسنده
+    """
     model = Author
     template_name = 'book/author/author_delete.html'
     success_url = reverse_lazy('book:author_list')
@@ -96,6 +116,9 @@ class AuthorDeleteView(GroupRequiredMixin,DeleteView):  # new
 
 
 class AddBookView(GroupRequiredMixin,CreateView):
+    """
+    افزودن کتاب
+    """
     # form_class = BookForm
     model = BookModel
     fields = '__all__'
@@ -105,6 +128,9 @@ class AddBookView(GroupRequiredMixin,CreateView):
 
 
 class AddAuthorView(GroupRequiredMixin,CreateView):
+    """
+    افزودن نویسنده
+    """
     # form_class = BookForm
     model = Author
     fields = '__all__'
@@ -131,6 +157,9 @@ class AddAuthorView(GroupRequiredMixin,CreateView):
 
 
 class AddCategoryView(GroupRequiredMixin,CreateView):
+    """
+    ایجاد دسته بندی
+    """
     # form_class = CategoryForm
     model = CategoryModel
     fields = '__all__'
@@ -140,6 +169,9 @@ class AddCategoryView(GroupRequiredMixin,CreateView):
 
 
 class CategoriesView(GroupRequiredMixin,ListView):
+    """
+    لیست دسته بندی ها، تفکیک شده بر اساس پر و خالی بودن
+    """
     model = CategoryModel
     template_name = 'book/categoty/category_list.html'
     group_required = [u'staff_group', u'admin_group']
@@ -156,6 +188,9 @@ class CategoriesView(GroupRequiredMixin,ListView):
 
 
 class CategoriesDetailView(GroupRequiredMixin,DetailView):
+    """
+    نشان دادن آیتم های هر دسته بندی
+    """
     model = CategoryModel
     template_name = 'book/categoty/categories_item.html'
     group_required = [u'staff_group', u'admin_group']
@@ -166,6 +201,9 @@ class CategoriesDetailView(GroupRequiredMixin,DetailView):
 
 
 class CategoriesEditView(GroupRequiredMixin,UpdateView):
+    """
+    ویرایش اطلاعات دسته بندی ها
+    """
     model = CategoryModel
     # fields = ('title', 'body',)
     fields = '__all__'
@@ -174,7 +212,10 @@ class CategoriesEditView(GroupRequiredMixin,UpdateView):
     group_required = [u'staff_group', u'admin_group']
 
 
-class CategoriesDeleteView(GroupRequiredMixin,DeleteView):  # new
+class CategoriesDeleteView(GroupRequiredMixin,DeleteView):
+    """
+    پاک کردن دسته بندی
+    """
     model = CategoryModel
     template_name = 'book/categoty/categories_delete.html'
     success_url = reverse_lazy('book:categories_list')

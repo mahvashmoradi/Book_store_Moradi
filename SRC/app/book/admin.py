@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import BookModel, CategoryModel, Author
 
-
 # admin.site.register(BookModel)
 # admin.site.register(CategoryModel)
 # admin.site.register(Author)
@@ -15,12 +14,14 @@ def export_as_json(modeladmin, request, queryset):
     serializers.serialize("json", queryset, stream=response)
     return response
 
+
 @admin.register(BookModel)
 class BookAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'discount_price', 'created', 'inventory', 'get_title', 'image']
     list_filter = ['categories']
     list_editable = ['price']
     actions = [export_as_json]
+
     # prepopulated_fields = {'slug': ('name',)}
     # list_display= ('get_title',...)
 

@@ -24,6 +24,7 @@ urlpatterns = [
     path('discount-edit/<int:pk>/', DiscountUpdateView.as_view(), name='discount_edit'),
     path('discount-delete/<int:pk>/', DiscountDeleteView.as_view(), name='discount_delete'),
     path('add-discount/', AddDiscountView.as_view(), name='add_discount'),
+    path('select-address/', SelectAddressView.as_view(), name='select-address'),
 
     ]
 

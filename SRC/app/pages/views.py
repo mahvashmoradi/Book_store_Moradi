@@ -9,8 +9,10 @@ from app.payment.models import Invoice, InvoiceLine
 
 
 # Create your views here.
-# اگر id دریافت نکرد، همه محصولات و اگر دریافت کرد محصولات همان دسته را نمایش می دهد
 class HomeView(View):
+    """
+     اگر id دریافت نکرد، همه محصولات و اگر دریافت کرد محصولات همان دسته را نمایش می دهد
+    """
     def get(self, request, id=None):
         product = BookModel.objects.all()
         # for i in product:
@@ -25,8 +27,10 @@ class HomeView(View):
         return render(request, 'pages/home.html',
                       {'product': product, 'categories': categories, 'category': category, 'form': form})
 
-    # عبارت وارد شده در کادر سرچ را دریافت میکند و در دیتابیس سرچ میکند و لیست برمیگرداند
     def post(self, request, id=None):
+        """
+         عبارت وارد شده در کادر سرچ را دریافت میکند و در دیتابیس سرچ میکند و لیست برمیگرداند
+        """
         if request.is_ajax():
             print(dict(request.POST.items()))  # محتویات درخواست مشاهده کنید
             input_text = request.POST['inputText']
@@ -47,18 +51,20 @@ class HomeView(View):
                 'books': list(books.values())
             })
 
-        # return render(request,'pages/home.html',{})
 
-
-# محصول را نمایش میدهد و همچنین یک فرم برای دریافت میزان درخواستی کالا دارد
 class ProductDetailView(View):
+    """
+    # محصول را نمایش میدهد و همچنین یک فرم برای دریافت میزان درخواستی کالا دارد
+    """
     def get(self, request, pk):
         object = get_object_or_404(BookModel, id=pk)
         form = CartAddProductionForm
         return render(request, 'pages/product.html', {'object': object, 'form': form})
 
-    # محصول را دریافت میکند. مشتری را تشخیص داده و در فاکتور و جزییات فاکتور ثبت میکند
     def post(self, request, pk):
+        """
+         # محصول را دریافت میکند. مشتری را تشخیص داده و در فاکتور و جزییات فاکتور ثبت میکند
+        """
         product = BookModel.objects.get(id=pk)
         # Get user account information
         print(request.user)

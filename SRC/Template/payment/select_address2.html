@@ -1,0 +1,131 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block title %}
+    Customer Info
+{% endblock title %}
+{% block content %}
+    <div class="container">
+
+        <div class="row">
+            <form method="POST" action="{% url 'payment:select-address' %}">
+                {% csrf_token %}
+                {% if address_info %}
+                    <button type="submit" class="btn btn-primary">ثبت نهایی</button>
+                {% else %}
+                    {#        {% else %}#}
+                    <p>شما اطلاعات کاربری خود را تکمیل نکرده اید، آیا مایلید آن را تکمیل کنید</p>
+                    <a class="btn btn-danger ml-2" href="{% url 'accounts:complete-info' %}">بله</a>
+                    <br>
+                    <br>
+                    <br>
+                {% endif %}
+
+                {#                                <label for="rdb">لطفا آدرس مورد نظر خود را انتخاب کنید</label>#}
+                {#            <input type="radio" name="relational_status" value="single" >single1#}
+                {#            <input type="radio" name="relational_status" value="married">married2#}
+                {#            <input type="radio" name="relational_status" value="Engaged" checked>Engaged3#}
+                {#            <input type="radio" name="relational_status" value="Separated" >Separated#}
+                <ul class="form-check" id="add_item">
+                    {% for obj in address_info %}
+                       <li class="list-group"> <div class="row">
+                            <div class="col-2">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault"
+                                       value="{{ obj.id }}" id="flexRadioDefault2" checked>
+                            </div>
+                            <div class="col-10">
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                    {{ obj.postal_code }} ،{{ obj.address }}، {{ obj.city }} ،{{ obj.province }}
+                                </label>
+                            </div>
+                        </div></li>
+                    {% endfor %}
+
+                </ul>
+            </form>
+
+        </div>
+        <div class="row">
+            <form method="POST" action=" ">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-10"><h5 class="modal-title"> آدرس جدید</h5></div>
+                    <div class="col-2">
+                        <button type="button" id="new_address" class="btn btn-primary">افزودن</button>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-responsive-md table-striped text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">استان</th>
+                        <th scope="col">شهر</th>
+                        <th scope="col">آدرس</th>
+                        <th scope="col">کد پستی</th>
+                        <th scope="col">تلفن</th>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td class="pt-3-half"><input type="text" id="province"></td>
+                        <td class="pt-3-half"><input type="text" id="city"></td>
+                        <td class="pt-3-half"><input type="text" id="address"></td>
+                        <td class="pt-3-half"><input type="text" id="postal"></td>
+                        <td class="pt-3-half"><input type="text" id="phone"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+{% block script %}
+
+    $(document).ready(function () {
+    const newTr = `
+    <li class="list-group"><div class="row">
+        <div class="col-2">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="" id="flexRadioDefault2"
+                   checked>
+        </div>
+        <div class="col-10">
+            <label class="form-check-label" for="flexRadioDefault2" id="label_select">
+            </label></div>
+    </div></li>
+    `;
+    $("#new_address").click(function(){
+
+    // ajax
+    $.post( "{% url 'payment:select-address' %}",
+    {
+    csrfmiddlewaretoken: '{{ csrf_token }}',
+    province: $("#province").val(),
+    city: $("#city").val(),
+    address: $("#address").val(),
+    postal: $("#postal").val(),
+    phone: $("#phone").val()
+    } ,function( data ) {
+    // console.log('data : ',data)
+    // iziToast.show({
+    // title: 'Hey',
+    // color : 'green',
+    // message: data.message
+    // });
+
+    console.log(data.message)
+
+    $("#add_item").append(newTr)
+    $("#label_select").append(''+postal.value+', '+address.value+',,'+city.value+','+province.value+'')
+    $("#flexRadioDefault2").value =data.message
+
+    }
+
+    );
+    // task= document.getElementById('search');
+    // task.value=null;
+    });
+
+
+    });
+
+
+{% endblock script %}

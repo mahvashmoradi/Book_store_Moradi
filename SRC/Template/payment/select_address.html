@@ -1,0 +1,56 @@
+{% extends 'pages/base.html' %}
+{% load static %}
+{% block title %}
+    Customer Info
+{% endblock title %}
+{% block content %}
+    <div class="container">
+<div class="row">
+            <div class="col-6">
+                    {% if address_info %}
+
+            <form method="POST" action="{% url 'payment:select-address' %}">
+                {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">پرداخت</button>
+
+                {#                                <label for="rdb">لطفا آدرس مورد نظر خود را انتخاب کنید</label>#}
+                {#            <input type="radio" name="relational_status" value="single" >single1#}
+                {#            <input type="radio" name="relational_status" value="married">married2#}
+                {#            <input type="radio" name="relational_status" value="Engaged" checked>Engaged3#}
+                {#            <input type="radio" name="relational_status" value="Separated" >Separated#}
+                {% for obj in address_info %}
+                    <div class="form-check" id="add_item">
+                    <div class="row">
+                    <div class="col-2">
+                             <input class="form-check-input" type="radio" name="flexRadioDefault" value="{{ obj.id }}" id="flexRadioDefault2"
+                               checked>
+                        </div>
+                        <div class="col-10">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                          {{ obj.postal_code }} ،{{ obj.address }}، {{ obj.city }} ،{{ obj.province }}
+                        </label></div>
+                    </div>
+
+                    </div>
+                {% endfor %}
+            </form>
+        {% else %}
+            <p>شما اطلاعات کاربری خود را تکمیل نکرده اید، آیا مایلید آن را تکمیل کنید</p>
+            <a class="btn btn-danger ml-2" href="{% url 'accounts:complete-info' %}">بله</a>
+                    {% endif %}
+
+            </div>
+        <div class="col-6">
+            <form method="POST" action="{% url 'payment:select-address' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-10"> <h5 class="modal-title"> آدرس جدید</h5></div>
+                    <div class="col-2"> <button type="submit" id="new_address" class="btn btn-primary">افزودن</button></div>
+                </div>
+
+             {{ address_form }}
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock content %}

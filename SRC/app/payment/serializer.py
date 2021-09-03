@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Coupons, Discount, Invoice, InvoiceLine
-from app.book.serializer import BookSerializer
 
 
 class CouponsSerializer(serializers.ModelSerializer):
@@ -41,6 +40,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
     # def create(self, validated_data):
     #
     #     # serializer = InvoiceLineSerializer(validated_data)

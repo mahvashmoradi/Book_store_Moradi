@@ -1,13 +1,8 @@
 from django.urls import reverse
 from django.db import models
-# from django.urls import revers
+
+
 # CategoryModel
-from django.shortcuts import redirect
-
-from app import payment
-from app.book.manager import CategoriesManager
-
-
 class CategoryModel(models.Model):
     # name of Category
     name = models.CharField('نام', max_length=50)
@@ -15,7 +10,6 @@ class CategoryModel(models.Model):
     class Meta:
         verbose_name = 'دسته بندی'
         verbose_name_plural = 'دسته بندی ها'
-        # app_label = 'book'
 
     def get_items(self):
         return ",".join([str(p) for p in self.category.all()])
@@ -77,8 +71,6 @@ class BookModel(models.Model):
     def get_category_display(self):
         return self.categories.values('name')
 
-    # def find_author(self):
-    #     return self.
 
     def add_cart(self):
         return reverse('payment:add_to_cart',
