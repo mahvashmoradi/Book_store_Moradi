@@ -35,6 +35,8 @@ class Discount(models.Model):
     percent = models.FloatField('درصد تخفیف', default=0)
     choice_discount = models.CharField(choices=Coupons.DISCOUNT_CHOICES, max_length=1, default=Coupons.VALUE)
 
+
+
     class Meta:
         verbose_name = 'تخفیف محصول'
         verbose_name_plural = 'تخفیف محصولات'
@@ -112,6 +114,7 @@ class InvoiceLine(models.Model):
     items = models.ForeignKey('book.BookModel', on_delete=models.DO_NOTHING, null=True, verbose_name='محصول')
     quantity = models.IntegerField('تعداد', null=True)
     date_added = models.DateTimeField(auto_now_add=True)
+    price = models.PositiveBigIntegerField('قیمت', blank=True, null= True)
 
     def add_to_cart(self):
         return self.id

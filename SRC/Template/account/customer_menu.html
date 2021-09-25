@@ -283,14 +283,16 @@
 
 
                         </td>
-                        <td>{{ item.items.price }}</td>
+                        <td>{{ item.price }}</td>
 
                             <td>{{ item.get_total }}</td>
 
                     {% endfor %}
                     </tr>
+                    <tr>
              <td>مجموع</td>
-          <td>  <span>{{ obj.total }}</span></td>
+          <td>  <span>{{ obj.total }}</span></td> {% if obj.total_with_discount %} <td>مجموع با تخفیف</td>
+          <td>  <span>{{ obj.total_with_discount }}</span></td>{% endif %}</tr>
                     </tbody>
                 </table>
 

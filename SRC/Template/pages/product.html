@@ -63,12 +63,11 @@
               </button>
 
             </form> {% endcomment %}
-            <form method="post" action="{% url 'pages:product' object.id %}">
+            <form method="post" action="">
                                             {% csrf_token %}
                                             <div class="row">
                                                 <div class="col">
                                                                     {{ form }}
-
                                                     <button type="submit" class="btn btn-primary">اضافه به سبد خرید
                                                     </button>
                                                 </div>

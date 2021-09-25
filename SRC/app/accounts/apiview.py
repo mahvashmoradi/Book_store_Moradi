@@ -1,4 +1,4 @@
-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, UpdateAPIView, RetrieveUpdateAPIView, ListAPIView, \
     RetrieveDestroyAPIView, ListCreateAPIView
@@ -44,7 +44,7 @@ class AddressInfo(RetrieveUpdateAPIView):
 class AddressCreate(ListCreateAPIView):
     serializer_class = AddressSerializer
 
-
+@login_required()
 def customer_info_view(request):
     # if request.method == 'POST' and request.is_ajax():
     #     print(dict(request.POST.items()))  # محتویات درخواست مشاهده کنید
@@ -56,7 +56,6 @@ def customer_info_view(request):
     customer = request.user.customer
     user_info = Customer.objects.get(user__email=customer)
     address_info = AddressModel.objects.filter(customer__user__email=customer)
-    order = Invoice.objects.filter(customer=customer)
+    # order = Invoice.objects.filter(customer=customer)
     return render(request, 'account/customer_profile.html', {'user_info': user_info,
-                                                             'address': address_info,
-                                                             'history': order})
+                                                             'address': address_info})

@@ -58,6 +58,9 @@ class Cart(View):
             total_discount_value = order.total
             if qs_value.exists():
                 total_discount_value = order.get_total_discount_price(qs_value[0])
+                order.total_with_discount = total_discount_value
+                order.check_discount = qs_value[0]
+                order.save()
                 message = "کد تخفیف اعمال شد "
             else:
                 message = "کد اشتباه است یا زمان آن منقضی شده است"
@@ -77,11 +80,19 @@ def remove_from_cart(request, pk):
         customer = request.user.customer
     except:
         device = request.COOKIES['device']
-        customer, created = Customer.objects.get_or_create(device=device)
-    order, created = Invoice.objects.get_or_create(customer=customer, status='O')
-    order_item, created = InvoiceLine.objects.get_or_create(invoice=order, items=product)
-    order.Items.remove(order_item)
-    order_item.delete()
+        customer = Customer.objects.get(device=device)
+    order= Invoice.objects.filter(customer=customer, status='O')
+    if order.exists():
+        order = order[0]
+        order_item = InvoiceLine.objects.filter(invoice=order, items=product)
+        if order_item.exists():
+            order_item = order_item[0]
+            order.Items.remove(order_item)
+            order_item.delete()
+        else:
+            messages.info(request, "This item was not in your cart")
+    else:
+        messages.info(request, "You do not have an active order")
     return redirect('payment:cart')
 
 
@@ -158,10 +169,17 @@ class CheckOut(LoginRequiredMixin, View):
                 messages.error(request,
                                f"  متاسفیم. درخواستی شما از محصول {item.items.name} بیشتر از موجودی انبار است")
                 isOk = False
+
         if isOk:
+            for item in order_item:
+                product_quantity = BookModel.objects.get(id=item.items.id)
+                product_quantity.inventory = product_quantity.inventory - item.quantity
+                product_quantity.save()
             order.invoice_complete_date = timezone.now()
             order.status = 'C'
             order.save()
+            # order.total =
+            # order.total_with_discount =
             return render(request, 'payment/finish.html')
         else:
             return redirect('payment:cart')

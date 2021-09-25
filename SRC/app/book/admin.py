@@ -17,7 +17,7 @@ def export_as_json(modeladmin, request, queryset):
 
 @admin.register(BookModel)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'discount_price', 'created', 'inventory', 'get_title', 'image']
+    list_display = ['name', 'price', 'discount_price', 'created', 'inventory', 'get_title']
     list_filter = ['categories']
     list_editable = ['price']
     actions = [export_as_json]

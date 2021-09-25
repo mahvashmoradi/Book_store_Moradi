@@ -76,9 +76,14 @@ class ProductDetailView(View):
             customer, created = Customer.objects.get_or_create(device=device)
 
         order, created = Invoice.objects.get_or_create(customer=customer, status='O')
-        orderItem, created = InvoiceLine.objects.get_or_create(invoice=order, items=product)
-        orderItem.quantity = request.POST['quantity']
-        orderItem.save()
+        form = CartAddProductionForm(request.POST or None)
+        if form.is_valid():
+            orderItem, created = InvoiceLine.objects.get_or_create(invoice=order, items=product)
+            orderItem.quantity = form.cleaned_data['quantity']
+            orderItem.price = product.discount_price if product.discount_price else product.price
+            orderItem.save()
+        else:
+            return redirect('./')
         return redirect('payment:cart')
 
 # class ProductDetailView(DetailView):

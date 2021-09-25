@@ -1,8 +1,11 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.http import request
 
 from .models import CustomUser, Customer
 from django.contrib.auth.models import Group
+
+from ..payment.models import Invoice
 
 
 @receiver(post_save, sender=CustomUser)
@@ -19,6 +22,11 @@ def my_handler(sender, instance, created, **kwargs):
             # group.save()
             instance.groups.add(group)
             instance.save()
+            # if request.COOKIES['device']:
+            #     device = request.COOKIES['device']
+            #     customer_define = Customer.objects.get(device=device)
+            #     order = Invoice.objects.get(customer=customer_define, status='O')
+            #     order.customer = customer
         except:
             print('again')
 
